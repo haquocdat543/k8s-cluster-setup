@@ -3,5 +3,5 @@
 ### TERRAFORM
 ### CLOUDFORMATION
 ## ON PREM 
-### VAGRANT ( you need to install VIRTUALBOX or VMWARE first )
+### VAGRANT 
 

@@ -1,3 +1,4 @@
+# Profile configuration
 provider "aws" {
   region     = "ap-northeast-1"
   access_key = var.access_key

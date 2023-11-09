@@ -178,7 +178,7 @@ resource "aws_instance" "Master1" {
   instance_type     = "t2.micro"
   availability_zone = "ap-northeast-1a"
   key_name          = var.key_pair
-  user_data         = file("./master.sh")
+  user_data         = file("../../master.sh")
 
   network_interface {
     device_index         = 0
@@ -194,7 +194,7 @@ resource "aws_instance" "Master2" {
   instance_type     = "t2.micro"
   availability_zone = "ap-northeast-1a"
   key_name          = var.key_pair
-  user_data         = file("./master.sh")
+  user_data         = file("../../master.sh")
 
   network_interface {
     device_index         = 0
@@ -211,7 +211,7 @@ resource "aws_instance" "Worker1" {
   instance_type     = "t2.micro"
   availability_zone = "ap-northeast-1a"
   key_name          = var.key_pair
-  user_data         = file("./worker.sh")
+  user_data         = file("../../worker.sh")
 
   network_interface {
     device_index         = 0
@@ -226,7 +226,7 @@ resource "aws_instance" "Worker2" {
   instance_type     = "t2.micro"
   availability_zone = "ap-northeast-1a"
   key_name          = var.key_pair
-  user_data         = file("./worker.sh")
+  user_data         = file("../../worker.sh")
 
   network_interface {
     device_index         = 0

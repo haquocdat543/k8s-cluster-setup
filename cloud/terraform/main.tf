@@ -1,8 +1,8 @@
 # Profile configuration
 provider "aws" {
-  region     = "ap-northeast-1"
-  access_key = var.access_key
-  secret_key = var.secret_key
+  shared_config_files      = ["~/.aws/config"]
+  shared_credentials_files = ["~/.aws/credentials"]
+  profile                  = var.profile
 }
 
 # Create VPC
@@ -159,7 +159,7 @@ resource "aws_eip_association" "eip_assoc_to_Worker2" {
 # Create Ubuntu server and install/ enable apache2
 resource "aws_instance" "LoadBalancer" {
   ami               = var.ami_id
-  instance_type     = "t2.micro"
+  instance_type     = "t3.small"
   availability_zone = "ap-northeast-1a"
   key_name          = var.key_pair
 
@@ -175,10 +175,10 @@ resource "aws_instance" "LoadBalancer" {
 
 resource "aws_instance" "Master1" {
   ami               = var.ami_id
-  instance_type     = "t2.micro"
+  instance_type     = "t3.small"
   availability_zone = "ap-northeast-1a"
   key_name          = var.key_pair
-  user_data         = file("../../master.sh")
+  user_data         = file("../../scripts/master.sh")
 
   network_interface {
     device_index         = 0
@@ -191,10 +191,10 @@ resource "aws_instance" "Master1" {
 }
 resource "aws_instance" "Master2" {
   ami               = var.ami_id
-  instance_type     = "t2.micro"
+  instance_type     = "t3.small"
   availability_zone = "ap-northeast-1a"
   key_name          = var.key_pair
-  user_data         = file("../../master.sh")
+  user_data         = file("../../scripts/master.sh")
 
   network_interface {
     device_index         = 0
@@ -208,10 +208,10 @@ resource "aws_instance" "Master2" {
 
 resource "aws_instance" "Worker1" {
   ami               = var.ami_id
-  instance_type     = "t2.micro"
+  instance_type     = "t3.small"
   availability_zone = "ap-northeast-1a"
   key_name          = var.key_pair
-  user_data         = file("../../worker.sh")
+  user_data         = file("../../scripts/worker.sh")
 
   network_interface {
     device_index         = 0
@@ -223,10 +223,10 @@ resource "aws_instance" "Worker1" {
 }
 resource "aws_instance" "Worker2" {
   ami               = var.ami_id
-  instance_type     = "t2.micro"
+  instance_type     = "t3.small"
   availability_zone = "ap-northeast-1a"
   key_name          = var.key_pair
-  user_data         = file("../../worker.sh")
+  user_data         = file("../../scripts/worker.sh")
 
   network_interface {
     device_index         = 0
@@ -239,17 +239,17 @@ resource "aws_instance" "Worker2" {
 
 #Output
 output "LoadBalancer" {
-  value = "ssh -i ${var.key_pair}.pem ec2-user@${aws_eip.LoadBalancer.public_ip}"
+  value = "ssh -i ~/${var.key_pair}.pem ec2-user@${aws_eip.LoadBalancer.public_ip}"
 }
 output "Master1" {
-  value = "ssh -i ${var.key_pair}.pem ec2-user@${aws_eip.Master1.public_ip}"
+  value = "ssh -i ~/${var.key_pair}.pem ec2-user@${aws_eip.Master1.public_ip}"
 }
 output "Master2" {
-  value = "ssh -i ${var.key_pair}.pem ec2-user@${aws_eip.Master2.public_ip}"
+  value = "ssh -i ~/${var.key_pair}.pem ec2-user@${aws_eip.Master2.public_ip}"
 }
 output "Worker1" {
-  value = "ssh -i ${var.key_pair}.pem ec2-user@${aws_eip.Worker1.public_ip}"
+  value = "ssh -i ~/${var.key_pair}.pem ec2-user@${aws_eip.Worker1.public_ip}"
 }
 output "Worker2" {
-  value = "ssh -i ${var.key_pair}.pem ec2-user@${aws_eip.Worker2.public_ip}"
+  value = "ssh -i ~/${var.key_pair}.pem ec2-user@${aws_eip.Worker2.public_ip}"
 }

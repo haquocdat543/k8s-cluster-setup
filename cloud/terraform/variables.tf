@@ -1,7 +1,5 @@
-variable "access_key" {
-  type = string
-}
-variable "secret_key" {
+variable "profile" {
+  default = "default"
   type = string
 }
 

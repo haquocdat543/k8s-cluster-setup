@@ -2,8 +2,12 @@
 This is a demonstration of k8s cluster setup using terraform collaborate with AWS ( Amazon Web Services )
 ## Prerequisites
 terraform installed.
+
 aws credentials configuration.
+
 If you dont have terraform, check [Installation](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli) here.
+
+If you dont have awscli and configure credentials, check [Installation](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) and [Configure](https://docs.aws.amazon.com/cli/latest/reference/configure/) here.
 
 ## Initialize
 ```

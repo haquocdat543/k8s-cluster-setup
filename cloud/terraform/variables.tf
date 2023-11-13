@@ -6,7 +6,7 @@ variable "secret_key" {
 }
 
 variable "ami_id" {
-  default = string
+  type = string
 }
 
 variable "key_pair" {

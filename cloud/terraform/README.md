@@ -18,6 +18,8 @@ terraform init
 terraform apply
 ```
 if you dont want to type yes after plan you can put `--auto-approve` at the end of command. Like this `terraform apply --auto-approve`
+
+You need to pass ami_id ( Like this: `ami-098940df4d3292e9a` ) and and key ( Like this: `mykey` )
 ## Destroy
 ```
 terraform destroy

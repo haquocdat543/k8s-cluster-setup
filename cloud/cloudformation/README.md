@@ -12,5 +12,6 @@ cd k8s-cluster-setup/cloud/cloudformation
 
 ## Deploy
 ```
-aws cloudformation deploy --stack-name <value> -template-file <value>
+aws cloudformation deploy --stack-name <value> --template-file <value>
 ```
+you need to change `<value>` to `your-stack-name` and `your-template-file-path`

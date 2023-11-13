@@ -17,10 +17,10 @@ terraform init
 ```
 terraform apply
 ```
-if you dont want to type yes after plan you can put `--auto-approve` at the end of command `terraform apply --auto-approve`
+if you dont want to type yes after plan you can put `--auto-approve` at the end of command. Like this `terraform apply --auto-approve`
 ## Destroy
 ```
 terraform destroy
 ```
-if you dont want to type yes after plan you can put `--auto-approve` at the end of command `terraform destroy --auto-approve`
+if you dont want to type yes after plan you can put `--auto-approve` at the end of command. Like this `terraform destroy --auto-approve`
 

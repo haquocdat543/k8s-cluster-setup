@@ -3,7 +3,7 @@
 ## ON CLOUD
 
 ### TERRAFORM
-
+Setup with terraform and aws here. [Setup](https://github.com/haquocdat543/k8s-cluster-setup/tree/main/cloud/terraform)
 #### Prerequisites
 ##### terraform installed
 

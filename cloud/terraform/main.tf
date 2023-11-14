@@ -162,6 +162,7 @@ resource "aws_instance" "LoadBalancer" {
   instance_type     = "t3.small"
   availability_zone = "ap-northeast-1a"
   key_name          = var.key_pair
+  user_data         = file("../../scripts/nginx.sh")
 
   network_interface {
     device_index         = 0

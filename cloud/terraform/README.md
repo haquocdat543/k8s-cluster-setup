@@ -69,6 +69,62 @@ sudo kubeadm init \
   --upload-certs \
   --control-plane-endpoint=loadbalancer:6443
 ```
+The output will has following lines:
+```
+kubeadm join loadbalancer:6443 --token zt55kb.k0jj3g9b1dnimxjh \
+        --discovery-token-ca-cert-hash sha256:62c6084eee6237c89b0b4e6967dcbe684901b465a66e42de6b79621ad05292de \
+        --control-plane --certificate-key 63531013ada7d33ee5bbf5d07d5cf0b71b0e5f4c19a415028309e6c48b404826
+```
+Copy it and run on each master node.
+
+3. Finish setup
+
+Copy the following commands and run it on each master node.
+```
+mkdir -p $HOME/.kube
+sudo cp -f /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+sudo cp /etc/kubernetes/admin.conf /root/.kube/config
+kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+```
+4. Add worker node.
+
+4.1 print join command.
+```
+kubeadm token create --print-join-command
+```
+The output will be like this:
+```
+kubeadm join loadbalancer:6443 --token zt55kb.k0jj3g9b1dnimxjh \
+        --discovery-token-ca-cert-hash sha256:62c6084eee6237c89b0b4e6967dcbe684901b465a66e42de6b79621ad05292de
+```
+
+4.2 add worker.
+
+Copy the output of `4.1` and run it on each worker node
+
+5. Check if success.
+
+Run following command:
+```
+kubectl get nodes
+```
+Result will be like this:
+```
+[root@ip-10-0-0-51 ~]# kubectl get nodes
+NAME                                           STATUS   ROLES           AGE
+VERSION
+ip-10-0-0-51.ap-northeast-1.compute.internal   Ready    control-plane   17m
+v1.28.3
+ip-10-0-0-52.ap-northeast-1.compute.internal   Ready    control-plane   7m6s
+v1.28.3
+ip-10-0-0-53.ap-northeast-1.compute.internal   Ready    <none>          3m52s
+v1.28.3
+ip-10-0-0-54.ap-northeast-1.compute.internal   Ready    <none>          3m48s
+v1.28.3
+[root@ip-10-0-0-51 ~]#
+```
+
 
 ## Destroy
 ```

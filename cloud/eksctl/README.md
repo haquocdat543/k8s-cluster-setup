@@ -16,7 +16,7 @@ cd k8s-cluster-setup/cloud/eksctl
 ## 3. Initialize cluster
 Copy and chnage following commands:
 
-`<cluster-name` to whatever you want
+`<cluster-name>` to whatever you want
 
 `<kubernetes-version>` to whatever version you want. At the time I write this, the newest is `1.28`. You can check [k8s](https://kubernetes.io) for more information.
 
@@ -35,5 +35,11 @@ eksctl create cluster \
 --nodegroup-name <nodegroup-name> \
 --node-type <instance-type> \
 --nodes <node-ammount> \
+```
+
+## 4. Delete cluster
+You need to change `<cluster-name>` to cluster which you want delete.
+```
+eksctl delete cluster --name <cluster-name>
 ```
 

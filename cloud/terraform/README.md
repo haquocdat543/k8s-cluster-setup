@@ -57,7 +57,7 @@ After loadbalancer config. You need to ssh to first master node and run followin
 
 You need to change `<loadbalancer-ip>` follow your output.
 
-1. hostname configuration
+1. hostname configuration ( Run on all nodes ).
 ```
 echo "<loadbalancer-ip> loadbalancer" >> /etc/hosts
 ```

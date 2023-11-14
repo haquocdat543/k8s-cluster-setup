@@ -4,6 +4,38 @@ provider "aws" {
   shared_credentials_files = ["~/.aws/credentials"]
   profile                  = var.profile
 }
+# Create an IAM policy
+resource "aws_iam_policy" "example_policy" {
+  name        = "example-policy"
+  description = "An example IAM policy"
+  
+  # Define the policy document in JSON format
+  policy = jsonencode()
+}
+
+#4 Create an IAM role
+resource "aws_iam_role" "example_role" {
+  name = "example-role"
+  
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Action = "sts:AssumeRole",
+        Effect = "Allow",
+        Principal = {
+          Service = "eks.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+# Attach the IAM policy to the IAM role
+resource "aws_iam_policy_attachment" "example_attachment" {
+  policy_arn = aws_iam_policy.example_policy.arn
+  roles      = [aws_iam_role.example_role.name]
+}
 
 # Create VPC
 resource "aws_vpc" "prod-vpc" {

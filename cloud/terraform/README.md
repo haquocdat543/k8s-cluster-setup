@@ -1,6 +1,6 @@
 # K8s cluster setup using terraform
 This is a demonstration of k8s cluster setup using terraform collaborate with AWS ( Amazon Web Services )
-## Prerequisites
+## 1. Prerequisites
 terraform installed.
 
 aws credentials configuration.
@@ -8,17 +8,17 @@ aws credentials configuration.
 If you dont have terraform, check [Installation](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli) here.
 
 If you dont have awscli and configure credentials, check [Installation](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) and [Configure](https://docs.aws.amazon.com/cli/latest/reference/configure/) here.
-## Clone repository
+## 2. Clone repository
 ```
 git clone https://github.com/haquocdat543/k8s-cluster-setup.git
 cd k8s-cluster-setup/cloud/terraform
 ```
 
-## Initialize
+## 3. Initialize
 ```
 terraform init
 ```
-## Apply
+## 4. Apply
 ```
 terraform apply
 ```
@@ -27,7 +27,7 @@ if you dont want to type yes after plan you can put `--auto-approve` at the end 
 You need to pass `aws credential profile`. If you dont type anything, it will be `default`
 
 You need to pass linux `ami_id` ( Like this: `ami-098940df4d3292e9a` ) and and `key_pair` ( Like this: `mykey` )
-### Output
+### 1. Output
 After finish the output may be like this:
 ```
 LoadBalancer = "ssh -i ~/Window2.pem ec2-user@3.115.183.222"
@@ -36,7 +36,7 @@ Master2 = "ssh -i ~/Window2.pem ec2-user@52.195.63.53"
 Worker1 = "ssh -i ~/Window2.pem ec2-user@52.192.58.229"
 Worker2 = "ssh -i ~/Window2.pem ec2-user@3.115.125.101"
 ```
-### LoadBalancer config
+### 2. LoadBalancer config
 You need to ssh into `loadbalancer` instance and run following commands:
 
 You need to change `<loadbalancer-ip>`, `<master-ip>`, `<master2-ip>` follow your output.
@@ -52,7 +52,7 @@ echo "<master2-ip> master2" >> /etc/hosts
 nginx -t
 sudo systemctl restart nginx
 ```
-### Controlplane config
+### 3. Controlplane config
 After loadbalancer config. You need to ssh to first master node and run following commands:
 
 You need to change `<loadbalancer-ip>` follow your output.
@@ -125,8 +125,7 @@ v1.28.3
 [root@ip-10-0-0-51 ~]#
 ```
 
-
-## Destroy
+## 5. Destroy
 ```
 terraform destroy
 ```

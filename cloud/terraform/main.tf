@@ -178,7 +178,7 @@ resource "aws_instance" "Master1" {
   instance_type     = "t3.small"
   availability_zone = "ap-northeast-1a"
   key_name          = var.key_pair
-  user_data         = file("../../scripts/master.sh")
+  user_data         = file("../../scripts/worker.sh")
 
   network_interface {
     device_index         = 0
@@ -194,7 +194,7 @@ resource "aws_instance" "Master2" {
   instance_type     = "t3.small"
   availability_zone = "ap-northeast-1a"
   key_name          = var.key_pair
-  user_data         = file("../../scripts/master.sh")
+  user_data         = file("../../scripts/worker.sh")
 
   network_interface {
     device_index         = 0

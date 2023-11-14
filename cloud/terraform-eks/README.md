@@ -1,5 +1,5 @@
-# K8s cluster setup using terraform
-This is a demonstration of k8s cluster setup using terraform collaborate with AWS ( Amazon Web Services )
+# K8s cluster setup using Terraform
+This is a demonstration of k8s cluster setup using Terraform collaborate with AWS ( Amazon Web Services ) ( EKS )
 
 Note: This is using EKS service ( Not base on EC2 and other services )
 ## Prerequisites

@@ -17,3 +17,5 @@ server {
     }
 }
 yum install nginx-mod-stream
+nginx -t
+sudo systemctl restart nginx

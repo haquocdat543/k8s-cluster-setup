@@ -36,7 +36,37 @@ Master2 = "ssh -i ~/Window2.pem ec2-user@52.195.63.53"
 Worker1 = "ssh -i ~/Window2.pem ec2-user@52.192.58.229"
 Worker2 = "ssh -i ~/Window2.pem ec2-user@3.115.125.101"
 ```
+### LoadBalancer config
+You need to ssh into `loadbalancer` instance and run following commands:
 
+You need to change `<loadbalancer-ip>`, `<master-ip>`, `<master2-ip>` follow your output.
+```
+echo "<loadbalancer-ip> loadbalancer" >> /etc/hosts
+echo "<master1-ip> master1" >> /etc/hosts
+echo "<master2-ip> master2" >> /etc/hosts
+```
+Restart nginx
+```
+nginx -t
+sudo systemctl restart nginx
+```
+### Controlplane config
+After loadbalancer config. You need to ssh to each master node and run following commands:
+
+You need to change `<loadbalancer-ip>` follow your output.
+
+1. hostname configuration
+```
+echo "<loadbalancer-ip> loadbalancer" >> /etc/hosts
+```
+2. Initilize controlplane 
+```
+sudo kubeadm init \
+  --pod-network-cidr=172.24.0.0/16 \
+  --cri-socket unix:///run/containerd/containerd.sock \
+  --upload-certs \
+  --control-plane-endpoint=loadbalancer:6443
+```
 
 ## Destroy
 ```

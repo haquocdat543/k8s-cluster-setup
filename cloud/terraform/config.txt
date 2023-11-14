@@ -16,3 +16,4 @@ server {
         proxy_pass kubernetes;
     }
 }
+yum install nginx-mod-stream

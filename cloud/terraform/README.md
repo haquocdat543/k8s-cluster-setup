@@ -40,18 +40,20 @@ Worker2 = "ssh -i ~/Window2.pem ec2-user@3.115.125.101"
 You need to ssh into `loadbalancer` instance and run following commands:
 
 You need to change `<loadbalancer-ip>`, `<master-ip>`, `<master2-ip>` follow your output.
+
+1. host configuration.
 ```
 echo "<loadbalancer-ip> loadbalancer" >> /etc/hosts
 echo "<master1-ip> master1" >> /etc/hosts
 echo "<master2-ip> master2" >> /etc/hosts
 ```
-Restart nginx
+2. Restart nginx.
 ```
 nginx -t
 sudo systemctl restart nginx
 ```
 ### Controlplane config
-After loadbalancer config. You need to ssh to each master node and run following commands:
+After loadbalancer config. You need to ssh to first master node and run following commands:
 
 You need to change `<loadbalancer-ip>` follow your output.
 

@@ -1,4 +1,4 @@
-# K8s cluster setup using terraform
+# K8s cluster setup using EKSCTL
 This is a demonstration of k8s cluster setup using eksctl collaborate with AWS ( Amazon Web Services )
 ## 1. Prerequisites
 eksctl installed.

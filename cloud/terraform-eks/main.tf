@@ -5,8 +5,8 @@ provider "aws" {
   profile                  = var.profile
 }
 # Create an IAM policy
-resource "aws_iam_policy" "example_policy" {
-  name        = "example-policy"
+resource "aws_iam_policy" "eks_policy" {
+  name        = "eks-policy"
   description = "An example IAM policy"
   
   # Define the policy document in JSON format
@@ -14,8 +14,8 @@ resource "aws_iam_policy" "example_policy" {
 }
 
 #4 Create an IAM role
-resource "aws_iam_role" "example_role" {
-  name = "example-role"
+resource "aws_iam_role" "eks_role" {
+  name = "eks-role"
   
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
@@ -32,9 +32,9 @@ resource "aws_iam_role" "example_role" {
 }
 
 # Attach the IAM policy to the IAM role
-resource "aws_iam_policy_attachment" "example_attachment" {
-  policy_arn = aws_iam_policy.example_policy.arn
-  roles      = [aws_iam_role.example_role.name]
+resource "aws_iam_policy_attachment" "eks_policy_role_attach" {
+  policy_arn = aws_iam_policy.eks_policy.arn
+  roles      = [aws_iam_role.eks_role.name]
 }
 
 # Create VPC
@@ -65,20 +65,34 @@ resource "aws_route_table" "ProdRouteTable" {
   }
 }
 # Create a Subnet
-resource "aws_subnet" "ProdSubnet" {
+resource "aws_subnet" "Public1" {
   vpc_id            = aws_vpc.prod-vpc.id
   cidr_block        = "10.0.0.0/24"
   availability_zone = "ap-northeast-1a"
 
   tags = {
-    Name = "ProdSubnet"
+    Name = "Public1"
   }
 }
+resource "aws_subnet" "Public2" {
+  vpc_id            = aws_vpc.prod-vpc.id
+  cidr_block        = "10.0.0.0/24"
+  availability_zone = "ap-northeast-1c"
+
+  tags = {
+    Name = "Public2"
+  }
+
 # Create Associate Subnet with Route Table
 resource "aws_route_table_association" "a" {
-  subnet_id      = aws_subnet.ProdSubnet.id
+  subnet_id      = aws_subnet.Public1.id
   route_table_id = aws_route_table.ProdRouteTable.id
 }
+
+resource "aws_route_table_association" "b" {
+  subnet_id      = aws_subnet.Public2.id
+  route_table_id = aws_route_table.ProdRouteTable.id
+
 # Create Security Group to allow port 22, 80, 443
 resource "aws_security_group" "ProdSecurityGroup" {
   name        = "ProdSecurityGroup"

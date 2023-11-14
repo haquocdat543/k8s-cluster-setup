@@ -4,38 +4,6 @@ provider "aws" {
   shared_credentials_files = ["~/.aws/credentials"]
   profile                  = var.profile
 }
-# Create an IAM policy
-resource "aws_iam_policy" "eks_policy" {
-  name        = "eks-policy"
-  description = "An example IAM policy"
-  
-  # Define the policy document in JSON format
-  policy = jsonencode()
-}
-
-#4 Create an IAM role
-resource "aws_iam_role" "eks_role" {
-  name = "eks-role"
-  
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Action = "sts:AssumeRole",
-        Effect = "Allow",
-        Principal = {
-          Service = "eks.amazonaws.com"
-        }
-      }
-    ]
-  })
-}
-
-# Attach the IAM policy to the IAM role
-resource "aws_iam_policy_attachment" "eks_policy_role_attach" {
-  policy_arn = aws_iam_policy.eks_policy.arn
-  roles      = [aws_iam_role.eks_role.name]
-}
 
 # Create VPC
 resource "aws_vpc" "prod-vpc" {
@@ -65,76 +33,84 @@ resource "aws_route_table" "ProdRouteTable" {
   }
 }
 # Create a Subnet
-resource "aws_subnet" "Public1" {
+resource "aws_subnet" "public1" {
   vpc_id            = aws_vpc.prod-vpc.id
   cidr_block        = "10.0.0.0/24"
   availability_zone = "ap-northeast-1a"
 
   tags = {
-    Name = "Public1"
+    Name = "public1"
   }
 }
-resource "aws_subnet" "Public2" {
+resource "aws_subnet" "public2" {
   vpc_id            = aws_vpc.prod-vpc.id
   cidr_block        = "10.0.0.0/24"
   availability_zone = "ap-northeast-1c"
 
   tags = {
-    Name = "Public2"
+    Name = "public2"
   }
-
+}
 # Create Associate Subnet with Route Table
 resource "aws_route_table_association" "a" {
-  subnet_id      = aws_subnet.Public1.id
+  subnet_id      = aws_subnet.public1.id
   route_table_id = aws_route_table.ProdRouteTable.id
 }
 
 resource "aws_route_table_association" "b" {
-  subnet_id      = aws_subnet.Public2.id
+  subnet_id      = aws_subnet.public2.id
   route_table_id = aws_route_table.ProdRouteTable.id
+}
 
-# Create Security Group to allow port 22, 80, 443
-resource "aws_security_group" "ProdSecurityGroup" {
-  name        = "ProdSecurityGroup"
-  description = "Allow SSH HTTP HTTPS"
-  vpc_id      = aws_vpc.prod-vpc.id
+data "aws_iam_policy_document" "assume_role" {
+  statement {
+    effect = "Allow"
 
-  ingress {
-    description = "HTTPS"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    description = "HTTP"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    description = "SSH"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+    principals {
+      type        = "Service"
+      identifiers = ["eks.amazonaws.com"]
+    }
 
-  egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-
-  tags = {
-    Name = "AllowHttpHttpsSshSecurityGroup"
+    actions = ["sts:AssumeRole"]
   }
 }
 
+resource "aws_iam_role" "eks-role" {
+  name               = "eks-cluster"
+  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+}
+
+resource "aws_iam_role_policy_attachment" "example-AmazonEKSClusterPolicy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+  role       = aws_iam_role.eks-role.name
+}
+
+resource "aws_iam_role_policy_attachment" "example-AmazonEKSVPCResourceController" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSVPCResourceController"
+  role       = aws_iam_role.eks-role.name
+}
+
+resource "aws_eks_cluster" "eks" {
+  name     = "my-eks"
+  role_arn = aws_iam_role.eks-role.arn
+
+  vpc_config {
+    subnet_ids = [aws_subnet.public1.id, aws_subnet.public2.id]
+  }
+
+  depends_on = [
+    aws_iam_role_policy_attachment.example-AmazonEKSClusterPolicy,
+    aws_iam_role_policy_attachment.example-AmazonEKSVPCResourceController,
+  ]
+}
+
+
 #Output
-output "LoadBalancer" {
-  value = "ssh -i ~/${var.key_pair}.pem ec2-user@${aws_eip.LoadBalancer.public_ip}"
+
+output "endpoint" {
+  value = aws_eks_cluster.example.endpoint
+}
+
+output "kubeconfig-certificate-authority-data" {
+  value = aws_eks_cluster.example.certificate_authority[0].data
 }

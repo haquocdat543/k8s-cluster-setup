@@ -27,6 +27,17 @@ if you dont want to type yes after plan you can put `--auto-approve` at the end 
 You need to pass `aws credential profile`. If you dont type anything, it will be `default`
 
 You need to pass linux `ami_id` ( Like this: `ami-098940df4d3292e9a` ) and and `key_pair` ( Like this: `mykey` )
+### Output
+After finish the output may be like this:
+```
+LoadBalancer = "ssh -i ~/Window2.pem ec2-user@3.115.183.222"
+Master1 = "ssh -i ~/Window2.pem ec2-user@54.92.71.82"
+Master2 = "ssh -i ~/Window2.pem ec2-user@52.195.63.53"
+Worker1 = "ssh -i ~/Window2.pem ec2-user@52.192.58.229"
+Worker2 = "ssh -i ~/Window2.pem ec2-user@3.115.125.101"
+```
+
+
 ## Destroy
 ```
 terraform destroy

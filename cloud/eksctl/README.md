@@ -5,9 +5,13 @@ eksctl installed.
 
 aws credentials configuration.
 
+kubectl.
+
 If you dont have eksctl, check [Installation](https://eksctl.io/installation/) here.
 
 If you dont have awscli and configure credentials, check [Installation](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) and [Configure](https://docs.aws.amazon.com/cli/latest/reference/configure/) here.
+
+If you dont have kubectl, check [Installation](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/) here.
 ## 2. Clone repository
 ```
 git clone https://github.com/haquocdat543/k8s-cluster-setup.git

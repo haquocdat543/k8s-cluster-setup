@@ -131,3 +131,17 @@ terraform destroy
 ```
 if you dont want to type yes after plan you can put `--auto-approve` at the end of command. Like this `terraform destroy --auto-approve`
 
+```
+aws_instance.Master2: Destruction complete after 2m22s
+aws_network_interface.Master2: Destroying... [id=eni-01998597bc47e297b]
+aws_network_interface.Master2: Destruction complete after 0s
+aws_subnet.ProdSubnet: Destroying... [id=subnet-0613e5aac3d7935e9]
+aws_security_group.ProdSecurityGroup: Destroying... [id=sg-013facda54c64ac89]
+aws_subnet.ProdSubnet: Destruction complete after 1s
+aws_security_group.ProdSecurityGroup: Destruction complete after 1s
+aws_vpc.prod-vpc: Destroying... [id=vpc-02f16941cfb0f53a6]
+aws_vpc.prod-vpc: Destruction complete after 1s
+Destroy complete! Resources: 26 destroyed.
+[root@ip-172-31-1-183 terraform]#
+```
+

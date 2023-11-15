@@ -23,4 +23,14 @@ Run the following command to get output:
 aws cloudformation describe-stacks --query Stacks[].Outputs[*].[OutputKey,OutputValue] --output text
 ```
 Output will be like this:
+```
+[root@ip-172-31-3-9 cloudformation]# aws cloudformation describe-stacks --query
+Stacks[].Outputs[*].[OutputKey,OutputValue] --output text
+LoadbalancerPublicIp    57.180.65.113
+Worker1PublicIp 52.194.212.194
+Worker2PublicIp 43.207.201.51
+Master2PublicIp 13.230.193.146
+Master1PublicIp 54.168.2.22
+[root@ip-172-31-3-9 cloudformation]#
+```
 

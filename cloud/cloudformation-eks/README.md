@@ -17,3 +17,9 @@ aws cloudformation deploy --stack-name
 default --template-file k8s.yaml --capabilities CAPABILITY_IAM
 ```
 you need to change `default` to `your-stack-name` 
+## Delete
+You need to change `<stack-name>` following `Deploy`
+```
+aws cloudformation delete-stack --stack-name <stack-name>
+```
+

@@ -125,3 +125,63 @@ Resources:
        SubnetId: 
         Ref: mySubnet
        PrivateIpAddress: 10.0.0.54
+  Loadbalancer: 
+    Type: AWS::EC2::Instance
+    Properties: 
+      ImageId: "ami-098940df4d3292e9a"
+      KeyName: "Window2"
+      NetworkInterfaces: 
+        - AssociatePublicIpAddress: "true"
+          DeviceIndex: "0"
+          GroupSet: 
+            - Ref: "mySG"
+          SubnetId: 
+            Ref: "mySubnet"
+  Master1: 
+    Type: AWS::EC2::Instance
+    Properties: 
+      ImageId: "ami-098940df4d3292e9a"
+      KeyName: "Window2"
+      NetworkInterfaces: 
+        - AssociatePublicIpAddress: "true"
+          DeviceIndex: "0"
+          GroupSet: 
+            - Ref: "mySG"
+          SubnetId: 
+            Ref: "mySubnet"
+  Master2: 
+    Type: AWS::EC2::Instance
+    Properties: 
+      ImageId: "ami-098940df4d3292e9a"
+      KeyName: "Window2"
+      NetworkInterfaces: 
+        - AssociatePublicIpAddress: "true"
+          DeviceIndex: "0"
+          GroupSet: 
+            - Ref: "mySG"
+          SubnetId: 
+            Ref: "mySubnet"
+  Worker1: 
+    Type: AWS::EC2::Instance
+    Properties: 
+      ImageId: "ami-098940df4d3292e9a"
+      KeyName: "Window2"
+      NetworkInterfaces: 
+        - AssociatePublicIpAddress: "true"
+          DeviceIndex: "0"
+          GroupSet: 
+            - Ref: "mySG"
+          SubnetId: 
+            Ref: "mySubnet"
+  Worker2: 
+    Type: AWS::EC2::Instance
+    Properties: 
+      ImageId: "ami-098940df4d3292e9a"
+      KeyName: "Window2"
+      NetworkInterfaces: 
+        - AssociatePublicIpAddress: "true"
+          DeviceIndex: "0"
+          GroupSet: 
+            - Ref: "mySG"
+          SubnetId: 
+            Ref: "mySubnet"

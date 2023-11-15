@@ -12,6 +12,7 @@ Resources:
   mySubnet1:
     Type: AWS::EC2::Subnet
     Properties:
+      MapPublicIpOnLaunch: true
       VpcId:
         Ref: myVPC
       CidrBlock: 10.0.0.0/24
@@ -22,6 +23,7 @@ Resources:
   mySubnet2:
     Type: AWS::EC2::Subnet
     Properties:
+      MapPublicIpOnLaunch: true
       VpcId:
         Ref: myVPC
       CidrBlock: 10.0.1.0/24
@@ -149,7 +151,8 @@ Resources:
   EKSNodegroup:
     Type: 'AWS::EKS::Nodegroup'
     Properties: 
-      ClusterName: !GetAtt EKSCluster.Name
+      ClusterName:
+        Ref: EKSCluster
       NodeRole: !GetAtt nodeGroup.Arn 
       ScalingConfig:
         MinSize: 3

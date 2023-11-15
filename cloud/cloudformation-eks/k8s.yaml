@@ -110,7 +110,7 @@ Resources:
       Name: "eks"
       Version: "1.28"
       RoleArn: 
-        - !GetAtt assumeRole.arn
+        Ref: nodeGroup
       ResourcesVpcConfig:
         SecurityGroupIds:
           Ref: mySG
@@ -150,7 +150,7 @@ Resources:
     Properties:
       ClusterName: "eks"
       NodeRole: 
-        - !GetAtt nodeGroup.arn
+        Ref: nodeGroup
       ScalingConfig:
         MinSize: 3
         DesiredSize: 5

@@ -55,7 +55,7 @@ Resources:
           FromPort: 0
           ToPort: 65535
           CidrIp: 0.0.0.0/0
-  myloadbalancerENI:
+  LoadbalancerENI:
     Type: AWS::EC2::NetworkInterface
     Properties:
        Tags:
@@ -69,7 +69,7 @@ Resources:
        SubnetId: 
         Ref: mySubnet
        PrivateIpAddress: 10.0.0.50
-  myMaster1ENI:
+  Master1ENI:
     Type: AWS::EC2::NetworkInterface
     Properties:
        Tags:
@@ -83,7 +83,7 @@ Resources:
        SubnetId: 
         Ref: mySubnet
        PrivateIpAddress: 10.0.0.51
-  myMaster2ENI:
+  Master2ENI:
     Type: AWS::EC2::NetworkInterface
     Properties:
        Tags:
@@ -97,7 +97,7 @@ Resources:
        SubnetId: 
         Ref: mySubnet
        PrivateIpAddress: 10.0.0.52
-  myWorker1ENI:
+  Worker1ENI:
     Type: AWS::EC2::NetworkInterface
     Properties:
        Tags:
@@ -111,7 +111,7 @@ Resources:
        SubnetId: 
         Ref: mySubnet
        PrivateIpAddress: 10.0.0.53
-  myWorker2ENI:
+  Worker2ENI:
     Type: AWS::EC2::NetworkInterface
     Properties:
        Tags:
@@ -185,3 +185,48 @@ Resources:
             - Ref: "mySG"
           SubnetId: 
             Ref: "mySubnet"
+  LoadbalancerENIAttach:
+     Type: AWS::EC2::NetworkInterfaceAttachment
+     Properties:
+        DeleteOnTermination: True
+        InstanceId:
+           Ref: Loadbalancer
+        NetworkInterfaceId:
+           Ref: LoadbalancerENI
+        DeviceIndex: 1
+  Master1ENIAttach:
+     Type: AWS::EC2::NetworkInterfaceAttachment
+     Properties:
+        DeleteOnTermination: True
+        InstanceId:
+           Ref: Master1
+        NetworkInterfaceId:
+           Ref: Master1ENI
+        DeviceIndex: 1
+  Master2ENIAttach:
+     Type: AWS::EC2::NetworkInterfaceAttachment
+     Properties:
+        DeleteOnTermination: True
+        InstanceId:
+           Ref: Master2
+        NetworkInterfaceId:
+           Ref: Master2ENI
+        DeviceIndex: 1
+  Worker1ENIAttach:
+     Type: AWS::EC2::NetworkInterfaceAttachment
+     Properties:
+        DeleteOnTermination: True
+        InstanceId:
+           Ref: Worker1
+        NetworkInterfaceId:
+           Ref: Worker1ENI
+        DeviceIndex: 1
+  Worker2ENIAttach:
+     Type: AWS::EC2::NetworkInterfaceAttachment
+     Properties:
+        DeleteOnTermination: True
+        InstanceId:
+           Ref: Worker2
+        NetworkInterfaceId:
+           Ref: Worker2ENI
+        DeviceIndex: 1

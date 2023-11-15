@@ -25,3 +25,11 @@ Resources:
       Tags:
       - Key: stack
         Value: production
+  myRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:  
+        Ref: myVPC
+      Tags:
+      - Key: stack
+        Value: production

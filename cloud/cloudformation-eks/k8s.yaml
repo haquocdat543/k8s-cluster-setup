@@ -73,6 +73,21 @@ Resources:
         Ref: mySubnet2
       RouteTableId:
         Ref: myRouteTable
+  mySG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow http to client host
+      VpcId: !Ref myVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 0
+          ToPort: 65535
+          CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: 0
+          ToPort: 65535
+          CidrIp: 0.0.0.0/0
   assumeRole:
     Type: 'AWS::IAM::Role'
     Properties:
@@ -92,9 +107,8 @@ Resources:
   EKSCluster:
     Type: AWS::EKS::Cluster
     Properties:
-      Name: eks
+      Name: "eks"
       Version: "1.28"
-        Ref: nodeGroup
       RoleArn: 
         - !GetAtt assumeRole.arn
       ResourcesVpcConfig:
@@ -134,7 +148,7 @@ Resources:
   EKSNodegroup:
     Type: 'AWS::EKS::Nodegroup'
     Properties:
-      ClusterName: eks
+      ClusterName: "eks"
       NodeRole: 
         - !GetAtt nodeGroup.arn
       ScalingConfig:

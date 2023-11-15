@@ -18,3 +18,8 @@ aws cloudformation deploy --stack-name <value> --template-file <value>
 ```
 you need to change `<value>` to `your-stack-name` and `your-template-file-path`
 ## with EKSCTL
+```
+aws cloudformation deploy --stack-name
+default --template-file k8s.yaml --capabilities CAPABILITY_IAM
+```
+

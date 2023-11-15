@@ -73,41 +73,33 @@ Resources:
         Ref: mySubnet2
       RouteTableId:
         Ref: myRouteTable
-  assumeRolePolicy:
-    Type: AWS::IAM::Policy
+  assumeRole:
+    Type: 'AWS::IAM::Role'
     Properties:
-      PolicyName: assumeRolePolicy
-      PolicyDocument: 
-        Version: 
-        Statement: 
-        - Action: 
-          - sts:AssumRole
-          Principals:  
-            Service: eks.amazonaws.com
-          Effect: Allow 
-      Roles: 
-        Ref: 
-  AssumeRole: 
-    Type: "AWS::IAM::Role"
-    Properties: 
-      AssumeRolePolicyDocument: 
-        Version: "2012-10-17"
-        Statement: 
-          - Effect: "Allow"
-            Principal: 
-              Service: 
-                - "eks.amazonaws.com"
-            Action: 
-              - "sts:AssumeRole"
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - eks.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Path: /
+      ManagedPolicyArns:
+        - !Ref AmazonEKSClusterPolicy
+        - !Ref AmazonEKSVPCResourceController
   EKSCluster:
     Type: AWS::EKS::Cluster
     Properties:
       Name: eks
       Version: "1.28"
-      RoleArn: "arn:aws:iam::012345678910:role/eks-service-role-AWSServiceRoleForAmazonEKS-EXAMPLEBQ4PI"
+        Ref: nodeGroup
+      RoleArn: 
+        - !GetAtt assumeRole.arn
       ResourcesVpcConfig:
         SecurityGroupIds:
-          Ref: mySF
+          Ref: mySG
         SubnetIds:
           Ref: mySubnet1
           Ref: mySubnet2
@@ -120,13 +112,31 @@ Resources:
             - Type: api
             - Type: audit
       Tags:
-        - Key: "key"
-          Value: "val"
+        - Key: "env"
+          Value: "dev"
+  nodeGroup:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Path: /
+      ManagedPolicyArns:
+        - !Ref AmazonEKSWorkerNodePolicy
+        - !Ref AmazonEKS_CNI_Policy
+        - !Ref AmazonEC2ContainerRegistryReadOnly
   EKSNodegroup:
     Type: 'AWS::EKS::Nodegroup'
     Properties:
       ClusterName: eks
-      NodeRole: 'arn:aws:iam::012345678910:role/eksInstanceRole'
+      NodeRole: 
+        - !GetAtt nodeGroup.arn
       ScalingConfig:
         MinSize: 3
         DesiredSize: 5

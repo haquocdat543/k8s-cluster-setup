@@ -26,12 +26,11 @@ Output will be like this:
 ```
 [root@ip-172-31-3-9 cloudformation]# aws cloudformation describe-stacks --query
 Stacks[].Outputs[*].[OutputKey,OutputValue] --output text
-LoadbalancerPublicIp    57.180.65.113
-Worker1PublicIp 52.194.212.194
-Worker2PublicIp 43.207.201.51
-Master2PublicIp 13.230.193.146
-Master1PublicIp 54.168.2.22
-[root@ip-172-31-3-9 cloudformation]#
+LoadbalancerPublicIp    13.115.209.219
+Worker1PublicIp 13.230.91.147
+Worker2PublicIp 57.180.34.47
+Master2PublicIp 52.196.233.222
+Master1PublicIp 13.114.126.227
 ```
 ## 5. LoadBalancer config
 You need to ssh into `loadbalancer` instance and run following commands:
@@ -68,9 +67,9 @@ sudo kubeadm init \
 ```
 The output will has following lines:
 ```
-kubeadm join loadbalancer:6443 --token zt55kb.k0jj3g9b1dnimxjh \
-        --discovery-token-ca-cert-hash sha256:62c6084eee6237c89b0b4e6967dcbe684901b465a66e42de6b79621ad05292de \
-        --control-plane --certificate-key 63531013ada7d33ee5bbf5d07d5cf0b71b0e5f4c19a415028309e6c48b404826
+kubeadm join loadbalancer:6443 --token k8c76a.4stzlrzj7ae27ydf \
+        --discovery-token-ca-cert-hash sha256:55121a7f7f685067584ae6981537e76ed39d35a3ac3d94d361f5e1fd8993bf13 \
+        --control-plane --certificate-key 7234d6f14ee95b70c24370ffebde22e320f0cac66f3370d55eec788ec69fcc4c
 ```
 Copy it and run on each master node.
 

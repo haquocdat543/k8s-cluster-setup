@@ -166,6 +166,7 @@ Resources:
             - Ref: "mySG"
           SubnetId: 
             Ref: "mySubnet"
+      InstanceType: t3.small
   Master1: 
     Type: AWS::EC2::Instance
     Properties: 
@@ -180,6 +181,7 @@ Resources:
             Ref: "mySubnet"
       UserData: 
         Ref: UserData
+      InstanceType: t3.small
   Master2: 
     Type: AWS::EC2::Instance
     Properties: 
@@ -194,6 +196,7 @@ Resources:
             Ref: "mySubnet"
       UserData: 
         Ref: UserData
+      InstanceType: t3.small
   Worker1: 
     Type: AWS::EC2::Instance
     Properties: 
@@ -208,6 +211,7 @@ Resources:
             Ref: "mySubnet"
       UserData: 
         Ref: UserData
+      InstanceType: t3.small
   Worker2: 
     Type: AWS::EC2::Instance
     Properties: 
@@ -222,6 +226,7 @@ Resources:
             Ref: "mySubnet"
       UserData: 
         Ref: UserData
+      InstanceType: t3.small
   LoadbalancerENIAttach:
      Type: AWS::EC2::NetworkInterfaceAttachment
      Properties:

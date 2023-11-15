@@ -9,17 +9,11 @@ If you dont have awscli and configure credentials, check [Installation](https://
 ## Clone repository
 ```
 git clone https://github.com/haquocdat543/k8s-cluster-setup.git
-cd k8s-cluster-setup/cloud/cloudformation
+cd k8s-cluster-setup/cloud/cloudformation-eks
 ```
-There are two way to to deloy EKS Cluter. [AWSCLI](https://docs.aws.amazon.com/cli/latest/reference/eks/create-cluster.html) or [EKSCTL](https://eksctl.io/installation/)
-## with AWSCLI
-```
-aws cloudformation deploy --stack-name <value> --template-file <value>
-```
-you need to change `<value>` to `your-stack-name` and `your-template-file-path`
-## with EKSCTL
+## Deploy
 ```
 aws cloudformation deploy --stack-name
 default --template-file k8s.yaml --capabilities CAPABILITY_IAM
 ```
-
+you need to change `default` to `your-stack-name` 

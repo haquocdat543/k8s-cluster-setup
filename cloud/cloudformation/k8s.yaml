@@ -1,4 +1,30 @@
 ---
+Outputs:
+  LoadbalancerPublicIp:
+    Description: Loadbalancer Public IP
+    Value: !GetAtt Loadbalancer.PublicIp
+    Export:
+      Name: !Sub "${AWS::StackName}-Loadbalancer-PublicIp"
+  Master1PublicIp:
+    Description: Master1 Public IP
+    Value: !GetAtt Master1.PublicIp
+    Export:
+      Name: !Sub "${AWS::StackName}-Master1-PublicIp"
+  Master2PublicIp:
+    Description: Master2 Public IP
+    Value: !GetAtt Master2.PublicIp
+    Export:
+      Name: !Sub "${AWS::StackName}-Master2-PublicIp"
+  Worker1PublicIp:
+    Description: Worker1 Public IP
+    Value: !GetAtt Worker1.PublicIp
+    Export:
+      Name: !Sub "${AWS::StackName}-Worker1-PublicIp"
+  Worker2PublicIp:
+    Description: Worker2 Public IP
+    Value: !GetAtt Worker2.PublicIp
+    Export:
+      Name: !Sub "${AWS::StackName}-Worker2-PublicIp"
 Resources:
   myVPC:
     Type: AWS::EC2::VPC

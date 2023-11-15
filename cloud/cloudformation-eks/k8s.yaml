@@ -25,7 +25,7 @@ Resources:
       VpcId:
         Ref: myVPC
       CidrBlock: 10.0.1.0/24
-      AvailabilityZone: "ap-northeast-1a"
+      AvailabilityZone: "ap-northeast-1c"
       Tags:
       - Key: name
         Value: production
@@ -107,16 +107,17 @@ Resources:
   EKSCluster:
     Type: AWS::EKS::Cluster
     Properties:
-      Name: "eks"
+      Name: EKSCluster
       Version: "1.28"
-      RoleArn: 
-        Ref: nodeGroup
+      RoleArn: !GetAtt assumeRole.Arn 
       ResourcesVpcConfig:
-        SecurityGroupIds:
+        SecurityGroupIds: [
           Ref: mySG
-        SubnetIds:
-          Ref: mySubnet1
+          ]
+        SubnetIds: [
+          Ref: mySubnet1,
           Ref: mySubnet2
+          ]
         EndpointPublicAccess: false
         EndpointPrivateAccess: true
         PublicAccessCidrs: [ "1.1.1.2/32" ]
@@ -147,10 +148,9 @@ Resources:
         - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
   EKSNodegroup:
     Type: 'AWS::EKS::Nodegroup'
-    Properties:
-      ClusterName: "eks"
-      NodeRole: 
-        Ref: nodeGroup
+    Properties: 
+      ClusterName: !GetAtt EKSCluster.Name
+      NodeRole: !GetAtt nodeGroup.Arn 
       ScalingConfig:
         MinSize: 3
         DesiredSize: 5
@@ -158,6 +158,7 @@ Resources:
       Labels:
         Key1: Value1
         Key2: Value2
-      Subnets:
-        Ref: mySubnet1
+      Subnets: [
+        Ref: mySubnet1,
         Ref: mySubnet2
+        ]

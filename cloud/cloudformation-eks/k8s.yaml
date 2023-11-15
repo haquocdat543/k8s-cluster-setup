@@ -38,12 +38,22 @@ Resources:
       Tags:
        - Key: name
          Value: production
-  mySubnet:
+  mySubnet1:
     Type: AWS::EC2::Subnet
     Properties:
       VpcId:
         Ref: myVPC
       CidrBlock: 10.0.0.0/24
+      AvailabilityZone: "ap-northeast-1a"
+      Tags:
+      - Key: name
+        Value: production
+  mySubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: myVPC
+      CidrBlock: 10.0.1.0/24
       AvailabilityZone: "ap-northeast-1a"
       Tags:
       - Key: name
@@ -78,10 +88,17 @@ Resources:
        DestinationCidrBlock: 0.0.0.0/0
        GatewayId:
          Ref: myInternetGateway
-  mySubnetRouteTableAssociation:
+  mySubnetRouteTableAssociation1:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId:
-        Ref: mySubnet
+        Ref: mySubnet1
+      RouteTableId:
+        Ref: myRouteTable
+  mySubnetRouteTableAssociation2:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId:
+        Ref: mySubnet2
       RouteTableId:
         Ref: myRouteTable

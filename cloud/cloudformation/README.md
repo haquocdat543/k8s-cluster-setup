@@ -17,3 +17,10 @@ cd k8s-cluster-setup/cloud/cloudformation
 aws cloudformation deploy --stack-name <value> --template-file <value>
 ```
 you need to change `<value>` to `your-stack-name` and `your-template-file-path`
+## Get output
+Run the following command to get output:
+```
+aws cloudformation describe-stacks --query Stacks[].Outputs[*].[OutputKey,OutputValue] --output text
+```
+Output will be like this:
+

@@ -179,7 +179,7 @@ Resources:
           SubnetId: 
             Ref: "mySubnet"
       UserData: 
-        !Ref: UserData
+        Ref: UserData
   Master2: 
     Type: AWS::EC2::Instance
     Properties: 
@@ -193,7 +193,7 @@ Resources:
           SubnetId: 
             Ref: "mySubnet"
       UserData: 
-        !Ref: UserData
+        Ref: UserData
   Worker1: 
     Type: AWS::EC2::Instance
     Properties: 
@@ -207,7 +207,7 @@ Resources:
           SubnetId: 
             Ref: "mySubnet"
       UserData: 
-        !Ref: UserData
+        Ref: UserData
   Worker2: 
     Type: AWS::EC2::Instance
     Properties: 
@@ -221,7 +221,7 @@ Resources:
           SubnetId: 
             Ref: "mySubnet"
       UserData: 
-        !Ref: UserData
+        Ref: UserData
   LoadbalancerENIAttach:
      Type: AWS::EC2::NetworkInterfaceAttachment
      Properties:

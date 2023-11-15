@@ -102,8 +102,8 @@ Resources:
               - 'sts:AssumeRole'
       Path: /
       ManagedPolicyArns:
-        - arn:aws:iam::policy/AmazonEKSClusterPolicy
-        - arn:aws:iam::policy/AmazonEKSVPCResourceController
+        - arn:aws:iam::aws:policy/AmazonEKSClusterPolicy
+        - arn:aws:iam::aws:policy/AmazonEKSVPCResourceController
   EKSCluster:
     Type: AWS::EKS::Cluster
     Properties:
@@ -142,9 +142,9 @@ Resources:
               - 'sts:AssumeRole'
       Path: /
       ManagedPolicyArns:
-        - arn:aws:iam::policy/AmazonEKSWorkerNodePolicy
-        - arn:aws:iam::policy/AmazonEKS_CNI_Policy
-        - arn:aws:iam::policy/AmazonEC2ContainerRegistryReadOnly
+        - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+        - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
   EKSNodegroup:
     Type: 'AWS::EKS::Nodegroup'
     Properties:

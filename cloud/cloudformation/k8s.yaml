@@ -40,3 +40,88 @@ Resources:
         Ref: mySubnet
       RouteTableId:
         Ref: myRouteTable
+  mySG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow http to client host
+      VpcId: !Ref myVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 0
+          ToPort: 65535
+          CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: 0
+          ToPort: 65535
+          CidrIp: 0.0.0.0/0
+  myloadbalancerENI:
+    Type: AWS::EC2::NetworkInterface
+    Properties:
+       Tags:
+       - Key: stack
+         Value: production
+       Description: A nice description.
+       SourceDestCheck: 'false'
+       GroupSet: [
+        Ref: mySG
+        ]
+       SubnetId: 
+        Ref: mySubnet
+       PrivateIpAddress: 10.0.0.50
+  myMaster1ENI:
+    Type: AWS::EC2::NetworkInterface
+    Properties:
+       Tags:
+       - Key: stack
+         Value: production
+       Description: A nice description.
+       SourceDestCheck: 'false'
+       GroupSet: [
+        Ref: mySG
+        ]
+       SubnetId: 
+        Ref: mySubnet
+       PrivateIpAddress: 10.0.0.51
+  myMaster2ENI:
+    Type: AWS::EC2::NetworkInterface
+    Properties:
+       Tags:
+       - Key: stack
+         Value: production
+       Description: A nice description.
+       SourceDestCheck: 'false'
+       GroupSet: [
+        Ref: mySG
+        ]
+       SubnetId: 
+        Ref: mySubnet
+       PrivateIpAddress: 10.0.0.52
+  myWorker1ENI:
+    Type: AWS::EC2::NetworkInterface
+    Properties:
+       Tags:
+       - Key: stack
+         Value: production
+       Description: A nice description.
+       SourceDestCheck: 'false'
+       GroupSet: [
+        Ref: mySG
+        ]
+       SubnetId: 
+        Ref: mySubnet
+       PrivateIpAddress: 10.0.0.53
+  myWorker2ENI:
+    Type: AWS::EC2::NetworkInterface
+    Properties:
+       Tags:
+       - Key: stack
+         Value: production
+       Description: A nice description.
+       SourceDestCheck: 'false'
+       GroupSet: [
+        Ref: mySG
+        ]
+       SubnetId: 
+        Ref: mySubnet
+       PrivateIpAddress: 10.0.0.54

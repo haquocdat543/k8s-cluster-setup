@@ -33,11 +33,33 @@ Master2PublicIp 52.196.233.222
 Master1PublicIp 13.114.126.227
 ```
 ## 5. LoadBalancer config
+
+1. host configuration.
+```
+sudo yum install nginx -y
+sudo systemctl start nginx
+sudo systemctl enable nginx
+
+yum install nginx-mod-stream -y
+
+cat <<EOF | sudo tee -a /etc/nginx/nginx.conf
+stream {
+    upstream kubernetes {
+        server master1:6443 max_fails=3 fail_timeout=30s;
+        server master2:6443 max_fails=3 fail_timeout=30s;
+    }
+server {
+        listen 6443;
+        listen 8080;
+        proxy_pass kubernetes;
+    }
+}
+EOF
+```
 You need to ssh into `loadbalancer` instance and run following commands:
 
 You need to change `<loadbalancer-ip>`, `<master-ip>`, `<master2-ip>` follow your output.
 
-1. host configuration.
 ```
 echo "<loadbalancer-ip> loadbalancer" >> /etc/hosts
 echo "<master1-ip> master1" >> /etc/hosts

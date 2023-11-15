@@ -13,8 +13,7 @@ cd k8s-cluster-setup/cloud/cloudformation-eks
 ```
 ## Deploy
 ```
-aws cloudformation deploy --stack-name
-default --template-file k8s.yaml --capabilities CAPABILITY_IAM
+aws cloudformation deploy --stack-name default --template-file k8s.yaml --capabilities CAPABILITY_IAM
 ```
 you need to change `default` to `your-stack-name` 
 ## Delete

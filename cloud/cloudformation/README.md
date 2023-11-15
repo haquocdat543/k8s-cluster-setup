@@ -33,4 +33,9 @@ Master2PublicIp 13.230.193.146
 Master1PublicIp 54.168.2.22
 [root@ip-172-31-3-9 cloudformation]#
 ```
+## Delete
+You need to change `<stack-name>` following `Deploy`
+```
+aws cloudformation delete-stack --stack-name <stack-name>
+```
 

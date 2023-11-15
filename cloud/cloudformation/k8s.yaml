@@ -9,3 +9,13 @@ Resources:
       Tags:
        - Key: name
          Value: production
+  mySubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: myVPC
+      CidrBlock: 10.0.0.0/24
+      AvailabilityZone: "ap-northeast-1a"
+      Tags:
+      - Key: name
+        Value: production

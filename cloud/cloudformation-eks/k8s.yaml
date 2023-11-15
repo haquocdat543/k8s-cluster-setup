@@ -1,33 +1,4 @@
 ---
-Parameters:
-  UserData:
-    Type: String
-Outputs:
-  LoadbalancerPublicIp:
-    Description: Loadbalancer Public IP
-    Value: !GetAtt Loadbalancer.PublicIp
-    Export:
-      Name: !Sub "${AWS::StackName}-Loadbalancer-PublicIp"
-  Master1PublicIp:
-    Description: Master1 Public IP
-    Value: !GetAtt Master1.PublicIp
-    Export:
-      Name: !Sub "${AWS::StackName}-Master1-PublicIp"
-  Master2PublicIp:
-    Description: Master2 Public IP
-    Value: !GetAtt Master2.PublicIp
-    Export:
-      Name: !Sub "${AWS::StackName}-Master2-PublicIp"
-  Worker1PublicIp:
-    Description: Worker1 Public IP
-    Value: !GetAtt Worker1.PublicIp
-    Export:
-      Name: !Sub "${AWS::StackName}-Worker1-PublicIp"
-  Worker2PublicIp:
-    Description: Worker2 Public IP
-    Value: !GetAtt Worker2.PublicIp
-    Export:
-      Name: !Sub "${AWS::StackName}-Worker2-PublicIp"
 Resources:
   myVPC:
     Type: AWS::EC2::VPC
@@ -102,3 +73,67 @@ Resources:
         Ref: mySubnet2
       RouteTableId:
         Ref: myRouteTable
+  assumeRolePolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: assumeRolePolicy
+      PolicyDocument: 
+        Version: 
+        Statement: 
+        - Action: 
+          - sts:AssumRole
+          Principals:  
+            Service: eks.amazonaws.com
+          Effect: Allow 
+      Roles: 
+        Ref: 
+  AssumeRole: 
+    Type: "AWS::IAM::Role"
+    Properties: 
+      AssumeRolePolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+          - Effect: "Allow"
+            Principal: 
+              Service: 
+                - "eks.amazonaws.com"
+            Action: 
+              - "sts:AssumeRole"
+  EKSCluster:
+    Type: AWS::EKS::Cluster
+    Properties:
+      Name: eks
+      Version: "1.28"
+      RoleArn: "arn:aws:iam::012345678910:role/eks-service-role-AWSServiceRoleForAmazonEKS-EXAMPLEBQ4PI"
+      ResourcesVpcConfig:
+        SecurityGroupIds:
+          Ref: mySF
+        SubnetIds:
+          Ref: mySubnet1
+          Ref: mySubnet2
+        EndpointPublicAccess: false
+        EndpointPrivateAccess: true
+        PublicAccessCidrs: [ "1.1.1.2/32" ]
+      Logging:
+        ClusterLogging:
+          EnabledTypes:
+            - Type: api
+            - Type: audit
+      Tags:
+        - Key: "key"
+          Value: "val"
+  EKSNodegroup:
+    Type: 'AWS::EKS::Nodegroup'
+    Properties:
+      ClusterName: eks
+      NodeRole: 'arn:aws:iam::012345678910:role/eksInstanceRole'
+      ScalingConfig:
+        MinSize: 3
+        DesiredSize: 5
+        MaxSize: 7
+      Labels:
+        Key1: Value1
+        Key2: Value2
+      Subnets:
+        Ref: mySubnet1
+        Ref: mySubnet2

@@ -14,7 +14,7 @@ cd k8s-cluster-setup/cloud/cloudformation
 
 ## 3. Deploy
 ```
-aws cloudformation deploy --stack-name <value> --template-file <value>
+aws cloudformation create-stack --stack-name default --template-body file://k8s.yaml --parameters ParameterKey=UserData,ParameterValue=$(base64 -w0 ../../scripts/worker.sh)
 ```
 you need to change `<value>` to `your-stack-name` and `your-template-file-path`
 ## 4. Get output

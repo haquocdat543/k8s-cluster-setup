@@ -1,4 +1,7 @@
 ---
+Parameters:
+  UserData:
+    Type: String
 Outputs:
   LoadbalancerPublicIp:
     Description: Loadbalancer Public IP
@@ -175,6 +178,8 @@ Resources:
             - Ref: "mySG"
           SubnetId: 
             Ref: "mySubnet"
+      UserData: 
+        !Ref: UserData
   Master2: 
     Type: AWS::EC2::Instance
     Properties: 
@@ -187,6 +192,8 @@ Resources:
             - Ref: "mySG"
           SubnetId: 
             Ref: "mySubnet"
+      UserData: 
+        !Ref: UserData
   Worker1: 
     Type: AWS::EC2::Instance
     Properties: 
@@ -199,6 +206,8 @@ Resources:
             - Ref: "mySG"
           SubnetId: 
             Ref: "mySubnet"
+      UserData: 
+        !Ref: UserData
   Worker2: 
     Type: AWS::EC2::Instance
     Properties: 
@@ -211,6 +220,8 @@ Resources:
             - Ref: "mySG"
           SubnetId: 
             Ref: "mySubnet"
+      UserData: 
+        !Ref: UserData
   LoadbalancerENIAttach:
      Type: AWS::EC2::NetworkInterfaceAttachment
      Properties:

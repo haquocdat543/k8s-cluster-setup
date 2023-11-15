@@ -1,57 +1,11 @@
-myVPC:
-  Type: AWS::EC2::VPC
-  Properties:
-    CidrBlock: 10.0.0.0/16
-    EnableDnsSupport: 'true'
-    EnableDnsHostnames: 'true'
-    Tags:
-     - Key: env
-       Value: dev
-mySubnet:
-  Type: AWS::EC2::Subnet
-  Properties:
-    VpcId:
-      Ref: myVPC
-    CidrBlock: 10.0.0.0/24
-    AvailabilityZone: "ap-northeast-1"
-    Tags:
-    - Key: env
-      Value: dev
-  myInternetGateway:
-    Type: AWS::EC2::InternetGateway
+---
+Resources:
+  myVPC:
+    Type: AWS::EC2::VPC
     Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: 'true'
+      EnableDnsHostnames: 'true'
       Tags:
-      - Key: stack
-        Value: production
-SGPing:
-  Type: AWS::EC2::SecurityGroup
-  DependsOn: VPC
-  Properties:
-    GroupDescription: SG to test ping
-    VpcId: !Ref VPC
-    SecurityGroupIngress:
-      - IpProtocol: tcp
-        FromPort: 22
-        ToPort: 22
-        CidrIp: 10.0.0.0/24
-      - IpProtocol: icmp
-        FromPort: 8
-        ToPort: -1
-        CidrIp: 10.0.0.0/24
-Ec2Instance: 
-  Type: AWS::EC2::Instance
-  Properties: 
-    ImageId: 
-      Fn::FindInMap: 
-        - "RegionMap"
-        - Ref: "AWS::Region"
-        - "AMI"
-    KeyName: 
-      Ref: "KeyName"
-    NetworkInterfaces: 
-      - AssociatePublicIpAddress: "true"
-        DeviceIndex: "0"
-        GroupSet: 
-          - Ref: "myVPCEC2SecurityGroup"
-        SubnetId: 
-          Ref: "PublicSubnet"
+       - Key: name
+         Value: production

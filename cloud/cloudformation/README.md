@@ -1,7 +1,7 @@
-# K8s cluster setup using cloudformation
-This is a demonstration of k8s cluster setup using cloudformation
+# K8s cluster setup using Cloudformation
+This is a demonstration of k8s cluster setup using Cloudformation
 
-Note: This is not using EKS service
+Note: This is not using EKS service ( Just base on EC2 and other services )
 ## Prerequisites
 aws credentials configuration.
 

@@ -19,3 +19,9 @@ Resources:
       Tags:
       - Key: name
         Value: production
+  myInternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+      - Key: stack
+        Value: production

@@ -1,1 +1,28 @@
-//This is vagrant file for setting up k8s cluster
+Vagrant.configure("2") do |config|
+  config.vm.box = "centos/7"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = 2048
+    vb.cpus = 2
+  end
+
+  config.vm.define "master" do |node|
+    node.vm.hostname = "master"
+    node.vm.network "private_network", ip: "10.0.0.10"
+  end
+
+  (1..2).each do |i|
+    config.vm.define "master-#{i}" do |node|
+      node.vm.hostname = "master-#{i}"
+      node.vm.network "private_network", ip: "10.0.0.#{10 + i}"
+    end
+  end
+
+  (3..4).each do |i|
+    config.vm.define "worker-#{i}" do |node|
+      node.vm.hostname = "worker-#{i}"
+      node.vm.network "private_network", ip: "10.0.0.#{10 + i}"
+    end
+  end
+
+end

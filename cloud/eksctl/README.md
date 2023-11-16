@@ -5,7 +5,7 @@ eksctl installed.
 
 aws credentials configuration.
 
-kubectl.
+kubectl installed.
 
 If you dont have eksctl, check [Installation](https://eksctl.io/installation/) here.
 
@@ -40,8 +40,36 @@ eksctl create cluster \
 --node-type <instance-type> \
 --nodes <node-ammount> \
 ```
+## 4. Kubeconfig
+```
+aws eks update-kubeconfig --name <cluster-name>
+```
+Result:
+```
+Updated context arn:aws:eks:ap-northeast-1:095368940515:cluster/my-eks in /root/
+.kube/config
+[root@ip-172-31-4-174 cloudformation-eks]#
+```
 
-## 4. Delete cluster
+## 5. Test
+```
+[root@ip-172-31-4-174 cloudformation-eks]# kubectl get nodes
+NAME                                            STATUS   ROLES    AGE     VERSIO
+N
+ip-10-0-0-148.ap-northeast-1.compute.internal   Ready    <none>   7m52s   v1.28.
+3-eks-4f4795d
+ip-10-0-0-26.ap-northeast-1.compute.internal    Ready    <none>   7m51s   v1.28.
+3-eks-4f4795d
+ip-10-0-0-73.ap-northeast-1.compute.internal    Ready    <none>   7m52s   v1.28.
+3-eks-4f4795d
+ip-10-0-1-25.ap-northeast-1.compute.internal    Ready    <none>   7m47s   v1.28.
+3-eks-4f4795d
+ip-10-0-1-30.ap-northeast-1.compute.internal    Ready    <none>   7m47s   v1.28.
+3-eks-4f4795d
+[root@ip-172-31-12-244 cloudformation-eks]#
+```
+
+## 6. Delete cluster
 You need to change `<cluster-name>` to cluster which you want delete.
 ```
 eksctl delete cluster --name <cluster-name>

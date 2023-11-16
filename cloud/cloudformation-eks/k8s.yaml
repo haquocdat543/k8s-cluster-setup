@@ -5,11 +5,6 @@ Outputs:
     Value: !GetAtt EKSCluster.Endpoint
     Export:
       Name: !Sub "${AWS::StackName}-EKSCluster-Endpoint"
-  EksClusterAuthorityData:
-    Description: Eks cluster authority data
-    Value: !GetAtt EKSCluster.CertificateAuthorityData
-    Export:
-      Name: !Sub "${AWS::StackName}-EKSCluster-ECertificateAuthorityData"
 Resources:
   myVPC:
     Type: AWS::EC2::VPC

@@ -20,7 +20,6 @@ you need to change `default` to `your-stack-name`
 ```
 aws eks update-kubeconfig --name EKSCluster
 ```
-
 ## Delete
 You need to change `<stack-name>` following `Deploy`
 ```

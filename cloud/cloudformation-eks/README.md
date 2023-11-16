@@ -12,21 +12,36 @@ git clone https://github.com/haquocdat543/k8s-cluster-setup.git
 cd k8s-cluster-setup/cloud/cloudformation-eks
 ```
 ## Deploy
+you need to change `default` to `your-stack-name` 
 ```
 aws cloudformation deploy --stack-name default --template-file k8s.yaml --capabilities CAPABILITY_IAM
 ```
-you need to change `default` to `your-stack-name` 
-## Kubeconfig 
+```
+[root@ip-172-31-12-244 cloudformation-eks]# aws cloudformation deploy --stack-na
+me default --template-file k8s.yaml --capabilities CAPABILITY_IAM
+Waiting for changeset to be created..
+Waiting for stack create/update to complete
+Successfully created/updated stack - default
+```
+
+## Output
 ```
 aws cloudformation describe-stacks --query Stacks[].Outputs[*].[OutputKey,OutputValue] --output text
 ```
+```
+[root@ip-172-31-12-244 cloudformation-eks]# aws cloudformation describe-stacks -
+-query Stacks[].Outputs[*].[OutputKey,OutputValue] --output text
+EksClusterEndpoint      https://84830A52FB1639240A14283F19A60348.gr7.ap-northeas
+t-1.eks.amazonaws.com
+[root@ip-172-31-12-244 cloudformation-eks]#
+```
 
-## Outout
+## Kubeconfig 
 ```
 aws eks update-kubeconfig --name EKSCluster
 ```
 ```
-[root@ip-172-31-6-223 cloudformation-eks]# aws eks update-kubeconfig --name EKSC
+[root@ip-172-31-12-244 cloudformation-eks]# aws eks update-kubeconfig --name EKSC
 luster
 Added new context arn:aws:eks:ap-northeast-1:095368940515:cluster/EKSCluster to
 /root/.kube/config

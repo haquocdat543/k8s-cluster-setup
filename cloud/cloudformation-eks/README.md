@@ -47,7 +47,25 @@ Added new context arn:aws:eks:ap-northeast-1:095368940515:cluster/EKSCluster to
 /root/.kube/config
 ```
 
-## 6. Delete
+## 6. Test
+```
+[root@ip-172-31-12-244 cloudformation-eks]# kubectl get nodes
+NAME                                            STATUS   ROLES    AGE     VERSIO
+N
+ip-10-0-0-148.ap-northeast-1.compute.internal   Ready    <none>   7m52s   v1.28.
+3-eks-4f4795d
+ip-10-0-0-26.ap-northeast-1.compute.internal    Ready    <none>   7m51s   v1.28.
+3-eks-4f4795d
+ip-10-0-0-73.ap-northeast-1.compute.internal    Ready    <none>   7m52s   v1.28.
+3-eks-4f4795d
+ip-10-0-1-25.ap-northeast-1.compute.internal    Ready    <none>   7m47s   v1.28.
+3-eks-4f4795d
+ip-10-0-1-30.ap-northeast-1.compute.internal    Ready    <none>   7m47s   v1.28.
+3-eks-4f4795d
+[root@ip-172-31-12-244 cloudformation-eks]#
+```
+
+## 7. Delete
 You need to change `<stack-name>` following `Deploy`
 ```
 aws cloudformation delete-stack --stack-name <stack-name>

@@ -1,0 +1,21 @@
+echo "13.113.118.105 loadbalancer" >> /etc/hosts
+echo "54.249.81.161 master1" >> /etc/hosts
+echo "52.197.175.240 master2" >> /etc/hosts
+
+echo "13.113.118.105 loadbalancer" >> /etc/hosts
+
+include    /etc/nginx/fastcgi.conf;
+
+stream {
+    upstream kubernetes {
+        server master1:6443 max_fails=3 fail_timeout=30s;
+        server master2:6443 max_fails=3 fail_timeout=30s;
+    }
+server {
+        listen 6443;
+        proxy_pass kubernetes;
+    }
+}
+yum install nginx-mod-stream
+nginx -t
+sudo systemctl restart nginx

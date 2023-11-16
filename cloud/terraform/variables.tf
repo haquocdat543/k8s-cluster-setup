@@ -4,6 +4,7 @@ variable "profile" {
 }
 
 variable "ami_id" {
+  default = "ami-098940df4d3292e9a"
   type = string
 }
 

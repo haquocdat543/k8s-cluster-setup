@@ -1,12 +1,13 @@
 #!/bin/bash
-### Network configuration
 sudo swapoff -a
+
 cat <<EOF | sudo tee /etc/modules-load.d/containerd.conf
 overlay
 br_netfilter
 EOF
 
 sudo modprobe overlay
+
 sudo modprobe br_netfilter
 
 cat <<EOF | sudo tee /etc/sysctl.d/99-kubernetes-cri.conf
@@ -17,24 +18,36 @@ EOF
 
 sudo sysctl --system
 
-### Containerd
 wget https://github.com/containerd/containerd/releases/download/v1.7.6/containerd-1.7.6-linux-amd64.tar.gz
+
 sudo tar Cxzvf /usr/local containerd-1.7.6-linux-amd64.tar.gz
+
 wget https://github.com/opencontainers/runc/releases/download/v1.1.9/runc.amd64
+
 sudo install -m 755 runc.amd64 /usr/local/sbin/runc
+
 wget https://github.com/containernetworking/plugins/releases/download/v1.3.0/cni-plugins-linux-amd64-v1.3.0.tgz
+
 sudo mkdir -p /opt/cni/bin
+
 sudo tar Cxzvf /opt/cni/bin cni-plugins-linux-amd64-v1.3.0.tgz
+
 sudo mkdir /etc/containerd
+
 containerd config default | sudo tee /etc/containerd/config.toml
+
 sudo sed -i 's/SystemdCgroup \= false/SystemdCgroup \= true/g' /etc/containerd/config.toml
+
 sudo curl -L https://raw.githubusercontent.com/containerd/containerd/main/containerd.service -o /etc/systemd/system/containerd.service
+
 sudo systemctl daemon-reload
+
 sudo systemctl enable --now containerd
+
 sudo setenforce 0
+
 sudo sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
 
-### Kubeadm
 cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
@@ -46,6 +59,10 @@ exclude=kubelet kubeadm kubectl cri-tools kubernetes-cni
 EOF
 
 sudo yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
+
 sudo systemctl enable --now kubelet
+
 sudo kubeadm config images pull --cri-socket unix:///run/containerd/containerd.sock
+
 dnf install -y iproute-tc
+

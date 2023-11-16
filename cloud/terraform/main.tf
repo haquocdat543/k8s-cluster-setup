@@ -54,25 +54,12 @@ resource "aws_security_group" "ProdSecurityGroup" {
   vpc_id      = aws_vpc.prod-vpc.id
 
   ingress {
-    description = "HTTPS"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
+    description = "ALL"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    description = "HTTP"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    description = "SSH"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
   }
 
   egress {
@@ -162,6 +149,7 @@ resource "aws_instance" "LoadBalancer" {
   instance_type     = "t3.small"
   availability_zone = "ap-northeast-1a"
   key_name          = var.key_pair
+  user_data         = file("../../scripts/nginx.sh")
 
   network_interface {
     device_index         = 0
@@ -178,7 +166,7 @@ resource "aws_instance" "Master1" {
   instance_type     = "t3.small"
   availability_zone = "ap-northeast-1a"
   key_name          = var.key_pair
-  user_data         = file("../../scripts/master.sh")
+  user_data         = file("../../scripts/worker.sh")
 
   network_interface {
     device_index         = 0
@@ -194,7 +182,7 @@ resource "aws_instance" "Master2" {
   instance_type     = "t3.small"
   availability_zone = "ap-northeast-1a"
   key_name          = var.key_pair
-  user_data         = file("../../scripts/master.sh")
+  user_data         = file("../../scripts/worker.sh")
 
   network_interface {
     device_index         = 0

@@ -126,17 +126,6 @@ Resources:
           Ref: mySubnet1,
           Ref: mySubnet2
           ]
-        EndpointPublicAccess: false
-        EndpointPrivateAccess: true
-        PublicAccessCidrs: [ "1.1.1.2/32" ]
-      Logging:
-        ClusterLogging:
-          EnabledTypes:
-            - Type: api
-            - Type: audit
-      Tags:
-        - Key: "env"
-          Value: "dev"
   nodeGroup:
     Type: 'AWS::IAM::Role'
     Properties:

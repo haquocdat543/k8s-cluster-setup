@@ -1,1 +1,290 @@
-//This is file to setup k8s cluster using AWS CloudFormation
+---
+Parameters:
+  UserData:
+    Type: String
+Outputs:
+  LoadbalancerPublicIp:
+    Description: Loadbalancer Public IP
+    Value: !GetAtt Loadbalancer.PublicIp
+    Export:
+      Name: !Sub "${AWS::StackName}-Loadbalancer-PublicIp"
+  Master1PublicIp:
+    Description: Master1 Public IP
+    Value: !GetAtt Master1.PublicIp
+    Export:
+      Name: !Sub "${AWS::StackName}-Master1-PublicIp"
+  Master2PublicIp:
+    Description: Master2 Public IP
+    Value: !GetAtt Master2.PublicIp
+    Export:
+      Name: !Sub "${AWS::StackName}-Master2-PublicIp"
+  Worker1PublicIp:
+    Description: Worker1 Public IP
+    Value: !GetAtt Worker1.PublicIp
+    Export:
+      Name: !Sub "${AWS::StackName}-Worker1-PublicIp"
+  Worker2PublicIp:
+    Description: Worker2 Public IP
+    Value: !GetAtt Worker2.PublicIp
+    Export:
+      Name: !Sub "${AWS::StackName}-Worker2-PublicIp"
+Resources:
+  myVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: 'true'
+      EnableDnsHostnames: 'true'
+      Tags:
+       - Key: name
+         Value: production
+  mySubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: myVPC
+      CidrBlock: 10.0.0.0/24
+      AvailabilityZone: "ap-northeast-1a"
+      Tags:
+      - Key: name
+        Value: production
+  myInternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+      - Key: name
+        Value: production
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId:
+        Ref: myVPC
+      InternetGatewayId:
+        Ref: myInternetGateway
+  myRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:  
+        Ref: myVPC
+      Tags:
+      - Key: name
+        Value: production
+  myRoute:
+    Type: AWS::EC2::Route
+    DependsOn: myInternetGateway
+    Properties:
+       RouteTableId:
+         Ref: myRouteTable
+       DestinationCidrBlock: 0.0.0.0/0
+       GatewayId:
+         Ref: myInternetGateway
+  mySubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId:
+        Ref: mySubnet
+      RouteTableId:
+        Ref: myRouteTable
+  mySG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow http to client host
+      VpcId: !Ref myVPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 0
+          ToPort: 65535
+          CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: 0
+          ToPort: 65535
+          CidrIp: 0.0.0.0/0
+  LoadbalancerENI:
+    Type: AWS::EC2::NetworkInterface
+    Properties:
+       Tags:
+       - Key: name
+         Value: production
+       Description: A nice description.
+       SourceDestCheck: 'false'
+       GroupSet: [
+        Ref: mySG
+        ]
+       SubnetId: 
+        Ref: mySubnet
+       PrivateIpAddress: 10.0.0.50
+  Master1ENI:
+    Type: AWS::EC2::NetworkInterface
+    Properties:
+       Tags:
+       - Key: name
+         Value: production
+       Description: A nice description.
+       SourceDestCheck: 'false'
+       GroupSet: [
+        Ref: mySG
+        ]
+       SubnetId: 
+        Ref: mySubnet
+       PrivateIpAddress: 10.0.0.51
+  Master2ENI:
+    Type: AWS::EC2::NetworkInterface
+    Properties:
+       Tags:
+       - Key: name
+         Value: production
+       Description: A nice description.
+       SourceDestCheck: 'false'
+       GroupSet: [
+        Ref: mySG
+        ]
+       SubnetId: 
+        Ref: mySubnet
+       PrivateIpAddress: 10.0.0.52
+  Worker1ENI:
+    Type: AWS::EC2::NetworkInterface
+    Properties:
+       Tags:
+       - Key: name
+         Value: production
+       Description: A nice description.
+       SourceDestCheck: 'false'
+       GroupSet: [
+        Ref: mySG
+        ]
+       SubnetId: 
+        Ref: mySubnet
+       PrivateIpAddress: 10.0.0.53
+  Worker2ENI:
+    Type: AWS::EC2::NetworkInterface
+    Properties:
+       Tags:
+       - Key: name
+         Value: production
+       Description: A nice description.
+       SourceDestCheck: 'false'
+       GroupSet: [
+        Ref: mySG
+        ]
+       SubnetId: 
+        Ref: mySubnet
+       PrivateIpAddress: 10.0.0.54
+  Loadbalancer: 
+    Type: AWS::EC2::Instance
+    Properties: 
+      ImageId: "ami-098940df4d3292e9a"
+      KeyName: "Window2"
+      NetworkInterfaces: 
+        - AssociatePublicIpAddress: "true"
+          DeviceIndex: "0"
+          GroupSet: 
+            - Ref: "mySG"
+          SubnetId: 
+            Ref: "mySubnet"
+      InstanceType: t3.small
+  Master1: 
+    Type: AWS::EC2::Instance
+    Properties: 
+      ImageId: "ami-098940df4d3292e9a"
+      KeyName: "Window2"
+      NetworkInterfaces: 
+        - AssociatePublicIpAddress: "true"
+          DeviceIndex: "0"
+          GroupSet: 
+            - Ref: "mySG"
+          SubnetId: 
+            Ref: "mySubnet"
+      UserData: 
+        Ref: UserData
+      InstanceType: t3.small
+  Master2: 
+    Type: AWS::EC2::Instance
+    Properties: 
+      ImageId: "ami-098940df4d3292e9a"
+      KeyName: "Window2"
+      NetworkInterfaces: 
+        - AssociatePublicIpAddress: "true"
+          DeviceIndex: "0"
+          GroupSet: 
+            - Ref: "mySG"
+          SubnetId: 
+            Ref: "mySubnet"
+      UserData: 
+        Ref: UserData
+      InstanceType: t3.small
+  Worker1: 
+    Type: AWS::EC2::Instance
+    Properties: 
+      ImageId: "ami-098940df4d3292e9a"
+      KeyName: "Window2"
+      NetworkInterfaces: 
+        - AssociatePublicIpAddress: "true"
+          DeviceIndex: "0"
+          GroupSet: 
+            - Ref: "mySG"
+          SubnetId: 
+            Ref: "mySubnet"
+      UserData: 
+        Ref: UserData
+      InstanceType: t3.small
+  Worker2: 
+    Type: AWS::EC2::Instance
+    Properties: 
+      ImageId: "ami-098940df4d3292e9a"
+      KeyName: "Window2"
+      NetworkInterfaces: 
+        - AssociatePublicIpAddress: "true"
+          DeviceIndex: "0"
+          GroupSet: 
+            - Ref: "mySG"
+          SubnetId: 
+            Ref: "mySubnet"
+      UserData: 
+        Ref: UserData
+      InstanceType: t3.small
+  LoadbalancerENIAttach:
+     Type: AWS::EC2::NetworkInterfaceAttachment
+     Properties:
+        DeleteOnTermination: True
+        InstanceId:
+           Ref: Loadbalancer
+        NetworkInterfaceId:
+           Ref: LoadbalancerENI
+        DeviceIndex: 1
+  Master1ENIAttach:
+     Type: AWS::EC2::NetworkInterfaceAttachment
+     Properties:
+        DeleteOnTermination: True
+        InstanceId:
+           Ref: Master1
+        NetworkInterfaceId:
+           Ref: Master1ENI
+        DeviceIndex: 1
+  Master2ENIAttach:
+     Type: AWS::EC2::NetworkInterfaceAttachment
+     Properties:
+        DeleteOnTermination: True
+        InstanceId:
+           Ref: Master2
+        NetworkInterfaceId:
+           Ref: Master2ENI
+        DeviceIndex: 1
+  Worker1ENIAttach:
+     Type: AWS::EC2::NetworkInterfaceAttachment
+     Properties:
+        DeleteOnTermination: True
+        InstanceId:
+           Ref: Worker1
+        NetworkInterfaceId:
+           Ref: Worker1ENI
+        DeviceIndex: 1
+  Worker2ENIAttach:
+     Type: AWS::EC2::NetworkInterfaceAttachment
+     Properties:
+        DeleteOnTermination: True
+        InstanceId:
+           Ref: Worker2
+        NetworkInterfaceId:
+           Ref: Worker2ENI
+        DeviceIndex: 1

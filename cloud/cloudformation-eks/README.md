@@ -25,6 +25,13 @@ aws cloudformation describe-stacks --query Stacks[].Outputs[*].[OutputKey,Output
 ```
 aws eks update-kubeconfig --name EKSCluster
 ```
+```
+[root@ip-172-31-6-223 cloudformation-eks]# aws eks update-kubeconfig --name EKSC
+luster
+Added new context arn:aws:eks:ap-northeast-1:095368940515:cluster/EKSCluster to
+/root/.kube/config
+```
+
 ## Delete
 You need to change `<stack-name>` following `Deploy`
 ```

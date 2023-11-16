@@ -18,6 +18,11 @@ aws cloudformation deploy --stack-name default --template-file k8s.yaml --capabi
 you need to change `default` to `your-stack-name` 
 ## Kubeconfig 
 ```
+aws cloudformation describe-stacks --query Stacks[].Outputs[*].[OutputKey,OutputValue] --output text
+```
+
+## Outout
+```
 aws eks update-kubeconfig --name EKSCluster
 ```
 ## Delete

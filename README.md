@@ -19,20 +19,20 @@ Component:
 
 * Vagrant
 ## 1. ON CLOUD
-### TERRAFORM
+### 1. TERRAFORM
 Setup k8s cluster with terraform and aws here. [Terraform](https://github.com/haquocdat543/k8s-cluster-setup/tree/main/cloud/terraform)
-### TERRAFORM EKS
+### 2. TERRAFORM EKS
 Setup k8s cluster with terraform and aws-eks here. [Terraform-eks](https://github.com/haquocdat543/k8s-cluster-setup/tree/main/cloud/terraform-eks)
-### CLOUDFORMATION
+### 3. CLOUDFORMATION
 Setup k8s cluster with cloudformation and aws here. [Terraform-eks](https://github.com/haquocdat543/k8s-cluster-setup/tree/main/cloud/cloudformation)
-### CLOUDFORMATION EKS
+### 4. CLOUDFORMATION EKS
 Setup k8s cluster  with cloudformation and aws here. [Cloudformation](https://github.com/haquocdat543/k8s-cluster-setup/tree/main/cloud/cloudformation-eks)
-### EKSCTL
+### 5. EKSCTL
 Setup k8s cluster with eksctl and aws here. [Eksctl](https://github.com/haquocdat543/k8s-cluster-setup/tree/main/cloud/cloudformation-eks)
-### HANDONCLOUD
+### 6. HANDONCLOUD
 Setup k8s cluster by hand using aws here. [Handoncloud](https://github.com/haquocdat543/k8s-cluster-setup/tree/main/cloud/handcloud)
 ## 2. ON PREM 
-### HANDONPREM
+### 1. HANDONPREM
 Setup k8s cluster with with Virtualbox here. [Handonprem](https://github.com/haquocdat543/k8s-cluster-setup/tree/main/onprem/handonprem)
-### VAGRANT 
+### 2. VAGRANT 
 Setup k8s cluster  with Vagrant and Virtualbox here. [Vagrant](https://github.com/haquocdat543/k8s-cluster-setup/tree/main/onprem/vagrant)

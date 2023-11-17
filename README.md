@@ -30,7 +30,7 @@ Setup k8s cluster  with cloudformation and aws here. [Cloudformation](https://gi
 ### EKSCTL
 Setup k8s cluster with eksctl and aws here. [Eksctl](https://github.com/haquocdat543/k8s-cluster-setup/tree/main/cloud/cloudformation-eks)
 ### HANDONCLOUD
-Setup k8s cluster by hand using aws here. [Eksctl](https://github.com/haquocdat543/k8s-cluster-setup/tree/main/cloud/handcloud)
+Setup k8s cluster by hand using aws here. [Handoncloud](https://github.com/haquocdat543/k8s-cluster-setup/tree/main/cloud/handcloud)
 ## 2. ON PREM 
 ### HANDONPREM
 Setup k8s cluster with with Virtualbox here. [Handonprem](https://github.com/haquocdat543/k8s-cluster-setup/tree/main/onprem/handonprem)

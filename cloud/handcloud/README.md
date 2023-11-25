@@ -1,10 +1,10 @@
 # K8s cluster setup by hand on smartphone
 This is a demonstration of k8s cluster setup by hand collaborate with AWS ( Amazon Web Services )
 ## Prerequisites
-A smartphone.
-
-A aws account
-## Step 1. Login to AWS console
+* A smartphone.
+* A aws account
+* Terminus
+## Step 1. Login to AWS console and navigate to EC2
 ![step1](./numberized-images/1.jpg)
 ## step 2. Launch instaces ( t3.small at least and select your key pair )
 ![step2](./numberized-images/2.jpg)

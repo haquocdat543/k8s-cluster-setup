@@ -4,3 +4,6 @@ This is a demonstration of k8s cluster setup by hand collaborate with AWS ( Amaz
 A smartphone.
 
 A aws account
+## Step 1
+![step1](./numberized-images/1.jpg)
+

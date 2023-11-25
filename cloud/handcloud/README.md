@@ -7,32 +7,35 @@ This is a demonstration of k8s cluster setup by hand collaborate with AWS ( Amaz
 ## Step 1. Login to AWS console and navigate to EC2
 ![step1](./numberized-images/1.jpg)
 ## step 2. Launch instaces ( t3.small at least and select your key pair )
+Requirement for each nodes is at least 2 Cpus and 2GB of ram ( t3.small satisfied this requirement )
 ![step2](./numberized-images/2.jpg)
 ## step 3. Select number of instance is 4
 ![step3](./numberized-images/3.jpg)
-## step 4. Pass userdata to those instances
+## step 4. Pass [userdata](https://github.com/haquocdat543/k8s-cluster-setup/blob/main/scripts/worker.sh) to those instances
 ![step4](./numberized-images/4.jpg)
 ## step 5. Tap Launch instance button 
 ![step5](./numberized-images/5.jpg)
 ## step 6. Rename those instances ( M1, M2, W1, W2 )
 ![step6](./numberized-images/6.jpg)
-## step 7. Continue launch an instance ( Loadbalancer )
+## step 7. Continue launch a new instance ( Loadbalancer )
 ![step7](./numberized-images/7.jpg)
 ## step 8. Instance type ( we can use t2.micro for Loadbalancer)
 ![step8](./numberized-images/8.jpg)
 ## step 9. Select number of instance is 1
 ![step9](./numberized-images/9.jpg)
-## step 10. Pass userdata to Loadbalancer
+## step 10. Pass [userdata](https://github.com/haquocdat543/k8s-cluster-setup/blob/main/scripts/nginx.sh) to Loadbalancer
 ![step10](./numberized-images/10.jpg)
 ## step 11. Get k8s nodes public ip addresses
 ![step11](./numberized-images/11.jpg)
 ## step 12. Get Loadbalancer public ip address 
 ![step12](./numberized-images/12.jpg)
 ## step 13. Get Termius
+You can use other softwares that you want
 ![step13](./numberized-images/13.jpg)
 ## step 14. Login to Loadbalancer
 ![step14](./numberized-images/14.jpg)
-## step 15 Prepare scripts for Loadbalancer
+## step 15 Prepare [scripts](https://github.com/haquocdat543/k8s-cluster-setup/blob/main/scripts/script.sh) for Loadbalancer
+You need to change ip addresses before execute
 ![step15](./numberized-images/15.jpg)
 ## step 16. Execute previous scripts and some commands
 ![step16](./numberized-images/16.jpg)

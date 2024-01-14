@@ -59,7 +59,7 @@ let loadbalancerUserData = fs.readFileSync('../../scripts/nginx.sh', 'utf-8');
 
 const loadbalancer = new aws.ec2.Instance("loadbalancer", {
     tags: { "Name": "loadbalancer" },
-    instanceType: aws.ec2.InstanceType.T2_Micro, // t2.micro is available in the AWS free tier
+    instanceType: aws.ec2.InstanceType.T3_Medium, // t2.micro is available in the AWS free tier
     vpcSecurityGroupIds: [ k8sSecurityGroup.id ], // reference the group object above
     ami: ami,
     subnetId: subnet.id,
@@ -69,7 +69,7 @@ const loadbalancer = new aws.ec2.Instance("loadbalancer", {
 
 const master1 = new aws.ec2.Instance("master1", {
     tags: { "Name": "master1" },
-    instanceType: aws.ec2.InstanceType.T2_Micro, // t2.micro is available in the AWS free tier
+    instanceType: aws.ec2.InstanceType.T3_Medium, // t2.micro is available in the AWS free tier
     vpcSecurityGroupIds: [ k8sSecurityGroup.id ], // reference the group object above
     ami: ami,
     subnetId: subnet.id,
@@ -79,7 +79,7 @@ const master1 = new aws.ec2.Instance("master1", {
 
 const master2 = new aws.ec2.Instance("master2", {
     tags: { "Name": "master2" },
-    instanceType: aws.ec2.InstanceType.T2_Micro, // t2.micro is available in the AWS free tier
+    instanceType: aws.ec2.InstanceType.T3_Medium, // t2.micro is available in the AWS free tier
     vpcSecurityGroupIds: [ k8sSecurityGroup.id ], // reference the group object above
     ami: ami,
     subnetId: subnet.id,
@@ -89,7 +89,7 @@ const master2 = new aws.ec2.Instance("master2", {
 
 const worker1 = new aws.ec2.Instance("worker1", {
     tags: { "Name": "worker1" },
-    instanceType: aws.ec2.InstanceType.T2_Micro, // t2.micro is available in the AWS free tier
+    instanceType: aws.ec2.InstanceType.T3_Medium, // t2.micro is available in the AWS free tier
     vpcSecurityGroupIds: [ k8sSecurityGroup.id ], // reference the group object above
     ami: ami,
     subnetId: subnet.id,
@@ -99,7 +99,7 @@ const worker1 = new aws.ec2.Instance("worker1", {
 
 const worker2 = new aws.ec2.Instance("worker2", {
     tags: { "Name": "worker2" },
-    instanceType: aws.ec2.InstanceType.T2_Micro, // t2.micro is available in the AWS free tier
+    instanceType: aws.ec2.InstanceType.T3_Medium, // t2.micro is available in the AWS free tier
     vpcSecurityGroupIds: [ k8sSecurityGroup.id ], // reference the k8sSecurityGroup object above
     ami: ami,
     subnetId: subnet.id,

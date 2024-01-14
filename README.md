@@ -7,6 +7,8 @@ Component:
 * [Terraform-eks](https://github.com/haquocdat543/k8s-cluster-setup/tree/main/cloud/terraform-eks)
 * [Cloudformation](https://github.com/haquocdat543/k8s-cluster-setup/tree/main/cloud/cloudformation)
 * [Cloudformation-eks](https://github.com/haquocdat543/k8s-cluster-setup/tree/main/cloud/cloudformation-eks)
+* [Pulumi](https://github.com/haquocdat543/k8s-cluster-setup/tree/main/cloud/pulumi)
+* [Pulumi-eks](https://github.com/haquocdat543/k8s-cluster-setup/tree/main/cloud/pulumi-eks)
 * [Eksctl](https://github.com/haquocdat543/k8s-cluster-setup/tree/main/cloud/cloudformation-eks)
 * [Handoncloud](https://github.com/haquocdat543/k8s-cluster-setup/tree/main/cloud/handcloud)
 * [Handonprem](https://github.com/haquocdat543/k8s-cluster-setup/tree/main/onprem/handonprem)

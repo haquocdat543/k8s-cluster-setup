@@ -31,11 +31,17 @@ pulumi stack init
 npm install
 ```
 ## 6. Create infrastructure
+Set config
+
+Replace <ap-northeast-1> to your customize
+```
+pulumi config set aws-native:region ap-northeast-1
+```
+
 ```
 pulumi up
 ```
 Then use arrow to choose `yes`
-
 
 ## 7. Output
 After finish the output may be like this:

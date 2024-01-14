@@ -40,6 +40,16 @@ Then use arrow to choose `yes`
 ## 7. Output
 After finish the output may be like this:
 ```
+loadbalancerpublicDns: "ec2-18-183-51-246.ap-northeast-1.compute.amazonaws.com"
+loadbalancerpublicIp : "18.183.51.246"
+master1publicDns     : "ec2-13-230-224-196.ap-northeast-1.compute.amazonaws.com"
+master1publicIp      : "13.230.224.196"
+master2publicDns     : "ec2-54-95-122-78.ap-northeast-1.compute.amazonaws.com"
+master2publicIp      : "54.95.122.78"
+worker1publicDns     : "ec2-54-168-233-72.ap-northeast-1.compute.amazonaws.com"
+worker1publicIp      : "54.168.233.72"
+worker2publicDns     : "ec2-52-194-240-239.ap-northeast-1.compute.amazonaws.com"
+worker2publicIp      : "52.194.240.239"
 ```
 ## 8. LoadBalancer configure
 You need to ssh into `loadbalancer` instance and run following commands:

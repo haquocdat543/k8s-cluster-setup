@@ -45,11 +45,42 @@ const k8sSecurityGroup = new aws.ec2.SecurityGroup("k8s-security-group", {
         },
     ],
 });
-const loadbalancerEIP = new awsNative.ec2.Eip("loadbalancer", {});
-const master1EIP = new awsNative.ec2.Eip("master1", {});
-const master2EIP = new awsNative.ec2.Eip("master2", {});
-const worker1EIP = new awsNative.ec2.Eip("worker1", {});
-const worker2EIP = new awsNative.ec2.Eip("worker2", {});
+
+const loadbalancerNetworkInterface = new aws.ec2.NetworkInterface("loadbalancer", {
+    subnetId: subnet.id,
+    privateIps: ["10.0.0.50"],
+    securityGroups: [k8sSecurityGroup.id],
+});
+
+const master1NetworkInterface = new aws.ec2.NetworkInterface("master1", {
+    subnetId: subnet.id,
+    privateIps: ["10.0.0.51"],
+    securityGroups: [k8sSecurityGroup.id],
+});
+
+const master2NetworkInterface = new aws.ec2.NetworkInterface("master2", {
+    subnetId: subnet.id,
+    privateIps: ["10.0.0.52"],
+    securityGroups: [k8sSecurityGroup.id],
+});
+
+const worker1NetworkInterface = new aws.ec2.NetworkInterface("worker1", {
+    subnetId: subnet.id,
+    privateIps: ["10.0.0.53"],
+    securityGroups: [k8sSecurityGroup.id],
+});
+
+const worker2NetworkInterface = new aws.ec2.NetworkInterface("worker2", {
+    subnetId: subnet.id,
+    privateIps: ["10.0.0.54"],
+    securityGroups: [k8sSecurityGroup.id],
+});
+
+const loadbalancerEIP = new awsNative.ec2.Eip("loadbalancer", { domain: "vpc"});
+const master1EIP = new awsNative.ec2.Eip("master1", { domain: "vpc" });
+const master2EIP = new awsNative.ec2.Eip("master2", { domain: "vpc" });
+const worker1EIP = new awsNative.ec2.Eip("worker1", { domain: "vpc" });
+const worker2EIP = new awsNative.ec2.Eip("worker2", { domain: "vpc" });
 
 // (optional) create a simple web server using the startup script for the instance
 // Create a FileAsset for your user data script
@@ -107,88 +138,39 @@ const worker2 = new aws.ec2.Instance("worker2", {
     userData: Buffer.from(workerUserData).toString('base64'),              // start a simple web server
 });
 
-new aws.ec2.EipAssociation("eipAssocToLoadBalancer", {
+const loadbalancerEIPAttachment = new aws.ec2.NetworkInterfaceAttachment("eipAssocToLoadBalancer", {
+    networkInterfaceId: loadbalancerNetworkInterface.id,
     instanceId: loadbalancer.id,
-    publicIp: loadbalancer.publicIp,
+    deviceIndex: 1,
 });
 
-new aws.ec2.EipAssociation("eipAssocToMaster1", {
+const master1EIPAttachment = new aws.ec2.NetworkInterfaceAttachment("eipAssocToMaster1", {
+    networkInterfaceId: master1NetworkInterface.id,
     instanceId: master1.id,
-    publicIp: master1.publicIp,
+    deviceIndex: 1,
 });
 
-new aws.ec2.EipAssociation("eipAssocToMaster2", {
+const master2EIPAttachment = new aws.ec2.NetworkInterfaceAttachment("eipAssocToMaster2", {
+    networkInterfaceId: master2NetworkInterface.id,
     instanceId: master2.id,
-    publicIp: master2.publicIp,
+    deviceIndex: 1,
 });
 
-new aws.ec2.EipAssociation("eipAssocToWorker1", {
+const worker1EIPAttachment = new aws.ec2.NetworkInterfaceAttachment("eipAssocToWorker1", {
+    networkInterfaceId: worker1NetworkInterface.id,
     instanceId: worker1.id,
-    publicIp: worker1.publicIp,
+    deviceIndex: 1,
 });
 
-new aws.ec2.EipAssociation("eipAssocToWorker2", {
+const worker2EIPAttachment = new aws.ec2.NetworkInterfaceAttachment("eipAssocToWorker2", {
+    networkInterfaceId: worker2NetworkInterface.id,
     instanceId: worker2.id,
-    publicIp: worker2.publicIp,
-});
-
-const loadbalancerNetworkInterface = new aws.ec2.NetworkInterface("loadbalancer", {
-    subnetId: subnet.id,
-    privateIps: ["10.0.0.50"],
-    securityGroups: [k8sSecurityGroup.id],
-    attachments: [{
-        instance: loadbalancer.id,
-        deviceIndex: 1,
-    }],
-});
-
-const master1NetworkInterface = new aws.ec2.NetworkInterface("master1", {
-    subnetId: subnet.id,
-    privateIps: ["10.0.0.51"],
-    securityGroups: [k8sSecurityGroup.id],
-    attachments: [{
-        instance: master1.id,
-        deviceIndex: 1,
-    }],
-});
-
-const master2NetworkInterface = new aws.ec2.NetworkInterface("master2", {
-    subnetId: subnet.id,
-    privateIps: ["10.0.0.52"],
-    securityGroups: [k8sSecurityGroup.id],
-    attachments: [{
-        instance: master2.id,
-        deviceIndex: 1,
-    }],
-});
-
-const worker1NetworkInterface = new aws.ec2.NetworkInterface("worker1", {
-    subnetId: subnet.id,
-    privateIps: ["10.0.0.53"],
-    securityGroups: [k8sSecurityGroup.id],
-    attachments: [{
-        instance: worker1.id,
-        deviceIndex: 1,
-    }],
-});
-
-const worker2NetworkInterface = new aws.ec2.NetworkInterface("worker2", {
-    subnetId: subnet.id,
-    privateIps: ["10.0.0.54"],
-    securityGroups: [k8sSecurityGroup.id],
-    attachments: [{
-        instance: worker2.id,
-        deviceIndex: 1,
-    }],
+    deviceIndex: 1,
 });
 
 export const loadbalancerpublicIp = loadbalancer.publicIp;
 export const loadbalancerpublicDns = loadbalancer.publicDns;
 export const worker1publicIp = worker1.publicIp;
 export const worker1publicDns = worker1.publicDns;
-export const worker2publicIp = worker2.publicIp;
-export const worker2publicDns = worker2.publicDns;
-export const master1publicIp = master1.publicIp;
-export const master1publicDns = master1.publicDns;
 export const master2publicIp = master2.publicIp;
 export const master2publicDns = master2.publicDns;

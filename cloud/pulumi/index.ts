@@ -21,6 +21,27 @@ const subnet = new aws.ec2.Subnet("my-subnet", {
     vpcId: vpc.id,
     cidrBlock: "10.0.0.0/24",
     availabilityZone: "ap-northeast-1a",
+    mapPublicIpOnLaunch: true,
+});
+
+// Create an internet gateway
+const internetGateway = new aws.ec2.InternetGateway("k8s-internet-gateway", {
+  vpcId: vpc.id,
+});
+
+// Create a route table
+const routeTable = new aws.ec2.RouteTable("public-route-table", {
+  vpcId: vpc.id,
+  routes: [{
+    cidrBlock: "0.0.0.0/0",
+    gatewayId: internetGateway.id,
+  }],
+});
+
+// Associate the route table with the public subnet
+new aws.ec2.RouteTableAssociation("public-route-table-association", {
+  subnetId: subnet.id,
+  routeTableId: routeTable.id,
 });
 
 // Create a security group
@@ -46,41 +67,12 @@ const k8sSecurityGroup = new aws.ec2.SecurityGroup("k8s-security-group", {
     ],
 });
 
-const loadbalancerNetworkInterface = new aws.ec2.NetworkInterface("loadbalancer", {
-    subnetId: subnet.id,
-    privateIps: ["10.0.0.50"],
-    securityGroups: [k8sSecurityGroup.id],
-});
+const LoadbalancerEip = new aws.ec2.Eip("Loadbalancer-eip", { domain: "vpc" });
+const Master1Eip = new aws.ec2.Eip("Master1-eip", { domain: "vpc" });
+const Master2Eip = new aws.ec2.Eip("Master2-eip", { domain: "vpc" });
+const Worker1Eip = new aws.ec2.Eip("Worker1-eip", { domain: "vpc" });
+const Worker2Eip = new aws.ec2.Eip("Worker2-eip", { domain: "vpc" });
 
-const master1NetworkInterface = new aws.ec2.NetworkInterface("master1", {
-    subnetId: subnet.id,
-    privateIps: ["10.0.0.51"],
-    securityGroups: [k8sSecurityGroup.id],
-});
-
-const master2NetworkInterface = new aws.ec2.NetworkInterface("master2", {
-    subnetId: subnet.id,
-    privateIps: ["10.0.0.52"],
-    securityGroups: [k8sSecurityGroup.id],
-});
-
-const worker1NetworkInterface = new aws.ec2.NetworkInterface("worker1", {
-    subnetId: subnet.id,
-    privateIps: ["10.0.0.53"],
-    securityGroups: [k8sSecurityGroup.id],
-});
-
-const worker2NetworkInterface = new aws.ec2.NetworkInterface("worker2", {
-    subnetId: subnet.id,
-    privateIps: ["10.0.0.54"],
-    securityGroups: [k8sSecurityGroup.id],
-});
-
-const loadbalancerEIP = new awsNative.ec2.Eip("loadbalancer", { domain: "vpc"});
-const master1EIP = new awsNative.ec2.Eip("master1", { domain: "vpc" });
-const master2EIP = new awsNative.ec2.Eip("master2", { domain: "vpc" });
-const worker1EIP = new awsNative.ec2.Eip("worker1", { domain: "vpc" });
-const worker2EIP = new awsNative.ec2.Eip("worker2", { domain: "vpc" });
 
 // (optional) create a simple web server using the startup script for the instance
 // Create a FileAsset for your user data script
@@ -96,6 +88,7 @@ const loadbalancer = new aws.ec2.Instance("loadbalancer", {
     subnetId: subnet.id,
     keyName: key,
     userData: Buffer.from(loadbalancerUserData).toString('base64'),              // start a simple web server
+    associatePublicIpAddress: false
 });
 
 const master1 = new aws.ec2.Instance("master1", {
@@ -106,6 +99,7 @@ const master1 = new aws.ec2.Instance("master1", {
     subnetId: subnet.id,
     keyName: key,
     userData: Buffer.from(masterUserData).toString('base64'),              // start a simple web server
+    associatePublicIpAddress: false
 });
 
 const master2 = new aws.ec2.Instance("master2", {
@@ -116,6 +110,7 @@ const master2 = new aws.ec2.Instance("master2", {
     subnetId: subnet.id,
     keyName: key,
     userData: Buffer.from(masterUserData).toString('base64'),              // start a simple web server
+    associatePublicIpAddress: false
 });
 
 const worker1 = new aws.ec2.Instance("worker1", {
@@ -126,6 +121,7 @@ const worker1 = new aws.ec2.Instance("worker1", {
     subnetId: subnet.id,
     keyName: key,
     userData: Buffer.from(workerUserData).toString('base64'),              // start a simple web server
+    associatePublicIpAddress: false
 });
 
 const worker2 = new aws.ec2.Instance("worker2", {
@@ -136,41 +132,18 @@ const worker2 = new aws.ec2.Instance("worker2", {
     subnetId: subnet.id,
     keyName: key,
     userData: Buffer.from(workerUserData).toString('base64'),              // start a simple web server
+    associatePublicIpAddress: false
 });
 
-const loadbalancerEIPAttachment = new aws.ec2.NetworkInterfaceAttachment("eipAssocToLoadBalancer", {
-    networkInterfaceId: loadbalancerNetworkInterface.id,
-    instanceId: loadbalancer.id,
-    deviceIndex: 1,
-});
+new aws.ec2.EipAssociation("Loadbalancer-eip-association", { allocationId: LoadbalancerEip.allocationId,  instanceId: loadbalancer.id, });
+new aws.ec2.EipAssociation("Master1-eip-association", { allocationId: Master1Eip.allocationId,  instanceId: master1.id, });
+new aws.ec2.EipAssociation("Master2-eip-association", { allocationId: Master2Eip.allocationId,  instanceId: master2.id, });
+new aws.ec2.EipAssociation("Worker1-eip-association", { allocationId: Worker1Eip.allocationId,  instanceId: worker1.id, });
+new aws.ec2.EipAssociation("Worker2-eip-association", { allocationId: Worker2Eip.allocationId,  instanceId: worker2.id, });
 
-const master1EIPAttachment = new aws.ec2.NetworkInterfaceAttachment("eipAssocToMaster1", {
-    networkInterfaceId: master1NetworkInterface.id,
-    instanceId: master1.id,
-    deviceIndex: 1,
-});
+export const loadbalancerpublicIp = LoadbalancerEip.publicIp;
+export const master1publicIp = Master1Eip.publicIp;
+export const master2publicIp = Master2Eip.publicIp;
+export const worker1publicIp = Worker1Eip.publicIp;
+export const worker2publicIp = Worker2Eip.publicIp;
 
-const master2EIPAttachment = new aws.ec2.NetworkInterfaceAttachment("eipAssocToMaster2", {
-    networkInterfaceId: master2NetworkInterface.id,
-    instanceId: master2.id,
-    deviceIndex: 1,
-});
-
-const worker1EIPAttachment = new aws.ec2.NetworkInterfaceAttachment("eipAssocToWorker1", {
-    networkInterfaceId: worker1NetworkInterface.id,
-    instanceId: worker1.id,
-    deviceIndex: 1,
-});
-
-const worker2EIPAttachment = new aws.ec2.NetworkInterfaceAttachment("eipAssocToWorker2", {
-    networkInterfaceId: worker2NetworkInterface.id,
-    instanceId: worker2.id,
-    deviceIndex: 1,
-});
-
-export const loadbalancerpublicIp = loadbalancer.publicIp;
-export const loadbalancerpublicDns = loadbalancer.publicDns;
-export const worker1publicIp = worker1.publicIp;
-export const worker1publicDns = worker1.publicDns;
-export const master2publicIp = master2.publicIp;
-export const master2publicDns = master2.publicDns;

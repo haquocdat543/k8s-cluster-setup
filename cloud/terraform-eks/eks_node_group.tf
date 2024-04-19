@@ -3,6 +3,7 @@ resource "aws_eks_node_group" "node-group-1" {
   node_group_name = "Medium-Group"
   node_role_arn   = aws_iam_role.node-group.arn
   instance_types  = ["t3.medium"]
+  version         = "1.29"
 
   subnet_ids      = [
     aws_subnet.first-subnet.id,
@@ -35,6 +36,7 @@ resource "aws_eks_node_group" "node-group-2" {
   node_group_name = "High-Group"
   node_role_arn   = aws_iam_role.node-group.arn
   instance_types  = ["t3.2xlarge"]
+  version         = "1.29"
 
   subnet_ids      = [
     aws_subnet.first-subnet.id,

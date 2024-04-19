@@ -1,7 +1,7 @@
 resource "aws_eks_node_group" "node-group-1" {
   cluster_name    = aws_eks_cluster.eks.name
   node_group_name = "Medium-Group"
-  node_role_arn   = aws_iam_role.node-group.arn
+  node_role_arn   = aws_iam_role.ec2_node_group.arn
   instance_types  = ["t3.medium"]
   version         = "1.29"
 
@@ -34,7 +34,7 @@ resource "aws_eks_node_group" "node-group-1" {
 resource "aws_eks_node_group" "node-group-2" {
   cluster_name    = aws_eks_cluster.eks.name
   node_group_name = "High-Group"
-  node_role_arn   = aws_iam_role.node-group.arn
+  node_role_arn   = aws_iam_role.ec2_node_group.arn
   instance_types  = ["t3.2xlarge"]
   version         = "1.29"
 

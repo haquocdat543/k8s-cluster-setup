@@ -1,12 +1,23 @@
-# Associate first ubnet with route table
+# Associate first private ubnet with route table
 resource "aws_route_table_association" "a" {
-  subnet_id      = aws_subnet.first-subnet.id
-  route_table_id = aws_route_table.route-table.id
+  subnet_id      = aws_subnet.first-private-subnet.id
+  route_table_id = aws_route_table.private-route-table.id
 }
 
-# Associate second subnet with route table
+# Associate second private subnet with route table
 resource "aws_route_table_association" "b" {
-  subnet_id      = aws_subnet.second-subnet.id
-  route_table_id = aws_route_table.route-table.id
+  subnet_id      = aws_subnet.second-private-subnet.id
+  route_table_id = aws_route_table.private-route-table.id
 }
 
+# Associate second public subnet with route table
+resource "aws_route_table_association" "c" {
+  subnet_id      = aws_subnet.second-public-subnet.id
+  route_table_id = aws_route_table.public-route-table.id
+}
+
+# Associate second public subnet with route table
+resource "aws_route_table_association" "d" {
+  subnet_id      = aws_subnet.second-public-subnet.id
+  route_table_id = aws_route_table.public-route-table.id
+}

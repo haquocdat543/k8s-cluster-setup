@@ -3,11 +3,12 @@ resource "aws_eks_node_group" "node-group-1" {
   node_group_name = "Medium-Group"
   node_role_arn   = aws_iam_role.ec2_node_group.arn
   instance_types  = ["t3.medium"]
+  capacity_type  = "ON_DEMAND"
   version         = "1.29"
 
   subnet_ids      = [
-    aws_subnet.first-subnet.id,
-    aws_subnet.second-subnet.id
+    aws_subnet.first-private-subnet.id,
+    aws_subnet.second-private-subnet.id
   ]
 
   scaling_config {
@@ -29,4 +30,9 @@ resource "aws_eks_node_group" "node-group-1" {
     aws_iam_role_policy_attachment.AmazonEKS_CNI_Policy,
     aws_iam_role_policy_attachment.AmazonEC2ContainerRegistryReadOnly,
   ]
+
+  lifecycle {
+    ignore_changes = [scaling_config[0].desired_size]
+  }
 }
+

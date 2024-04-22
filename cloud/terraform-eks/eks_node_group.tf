@@ -5,7 +5,7 @@ resource "aws_eks_node_group" "node-group-1" {
   instance_types  = ["t3.medium"]
   version         = "1.29"
 
-  subnet_ids      = [
+  subnet_ids = [
     aws_subnet.first-subnet.id,
     aws_subnet.second-subnet.id
   ]

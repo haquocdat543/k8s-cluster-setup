@@ -16,7 +16,7 @@ resource "aws_security_group" "security-group" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  
+
   ingress {
     from_port   = 2379
     to_port     = 2380
@@ -53,7 +53,9 @@ resource "aws_security_group" "security-group" {
   }
 
   tags = {
-    Name = "Developement-Kubernetes-Security-Group"
+    Name                                        = "Developement-Kubernetes-Security-Group"
+    "kubernetes.io/role/internal"               = "1"
+    "kubernetes.io/cluster/${var.cluster_name}" = "owned"
   }
 }
 

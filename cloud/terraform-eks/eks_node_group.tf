@@ -6,8 +6,8 @@ resource "aws_eks_node_group" "node-group-1" {
   version         = "1.29"
 
   subnet_ids = [
-    aws_subnet.first-subnet.id,
-    aws_subnet.second-subnet.id
+    aws_subnet.first-private-subnet.id,
+    aws_subnet.second-private-subnet.id
   ]
 
   scaling_config {

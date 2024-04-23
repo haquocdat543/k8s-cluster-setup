@@ -20,13 +20,14 @@ spec:
       operator: NotIn
       values: [nano, micro, small, large]
   providerRef:
-    name: my-provider
+    name: bottle-rocket
 ---
 apiVersion: karpenter.k8s.aws/v1alpha1
 kind: AWSNodeTemplate
 metadata:
-  name: my-provider
+  name: bottle-rocket
 spec:
+  amiFamily: Bottlerocket
   subnetSelector:
     kubernetes.io/cluster/my-eks: owned
   securityGroupSelector:
